@@ -167,8 +167,8 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                   selectedDate && transactions
                     .filter(tx => tx.date === format(selectedDate, 'yyyy-MM-dd'))
                     .map(tx => (
-                      <div key={tx.id} className="flex justify-between items-center p-3 border rounded-lg">
-                        <div>
+                      <div key={tx.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border rounded-lg">
+                        <div className="w-full sm:w-auto">
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap ${
                               tx.type === 'saving' || tx.category === 'saving'
@@ -182,9 +182,9 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                               {getCategoryLabel(tx.type, tx.category)}
                             </span>
                           </div>
-                          {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
+                          {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1 truncate max-w-[200px] sm:max-w-xs">{tx.description}</p>}
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3">
                           <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-slate-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
                             {(tx.type === 'income' || tx.type === 'brought_forward') ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </span>

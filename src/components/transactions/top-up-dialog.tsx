@@ -29,9 +29,9 @@ export function TopUpDialog({ user, dict }: { user: any, dict: Dictionary }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={
-        <Button variant="outline" size="sm" className="h-7 px-2 bg-slate-50 hover:bg-slate-100 text-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-800">
-          <Plus className="h-3 w-3 mr-1" />
-          {dict.dashboard.cashflow || 'Top-up'}
+        <Button variant="outline" size="sm" className="h-7 w-7 p-0 sm:w-auto sm:px-2 bg-slate-50 hover:bg-slate-100 text-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-800">
+          <Plus className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">{dict.dashboard.cashflow || 'Top-up'}</span>
         </Button>
       } />
       <DialogContent className="sm:max-w-[425px]">
