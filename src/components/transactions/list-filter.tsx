@@ -39,7 +39,7 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
           onValueChange={(v) => updateFilters(v, currentType)}
         >
           <SelectTrigger className="w-full h-10 bg-background">
-            <SelectValue placeholder="Period" />
+            <SelectValue placeholder={dict.dashboard?.allTime || "Period"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{dict.dashboard?.allTime || "All Time"}</SelectItem>
@@ -55,13 +55,13 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
           onValueChange={(v) => updateFilters(currentPeriod, v)}
         >
           <SelectTrigger className="w-full h-10 bg-background">
-            <SelectValue placeholder="Type" />
+            <SelectValue placeholder={dict.transaction?.type || "Type"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{dict.transaction?.allTypes || "All Types"}</SelectItem>
             <SelectItem value="income">{dict.transaction?.income || "Income"}</SelectItem>
             <SelectItem value="expense">{dict.transaction?.expense || "Expense"}</SelectItem>
-            <SelectItem value="saving">{dict.transaction?.saving || "Saving"}</SelectItem>
+            <SelectItem value="saving">{dict.transaction?.savingType || "Saving"}</SelectItem>
           </SelectContent>
         </Select>
       </div>
