@@ -17,8 +17,10 @@ export function TransactionFilter({ dict }: { dict: Dictionary }) {
 
   const updateFilters = (period: string, type: string, category: string) => {
     const params = new URLSearchParams(searchParams.toString())
-    if (period && period !== 'all') params.set('period', period)
-    else params.delete('period')
+    
+    // month is the default period
+    if (period === 'month') params.delete('period')
+    else params.set('period', period)
 
     if (type && type !== 'all') params.set('type', type)
     else params.delete('type')
