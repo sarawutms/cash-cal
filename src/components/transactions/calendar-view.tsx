@@ -162,12 +162,17 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                       <div key={tx.id} className="flex justify-between items-center p-3 border rounded-lg">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold">{getCategoryLabel(tx.type, tx.category)}</span>
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${tx.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                              {tx.type === 'income' ? dict.transaction.income : dict.transaction.expense}
+                            <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap ${
+                              tx.category === 'saving' 
+                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
+                                : tx.type === 'income' 
+                                  ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 
+                                  : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'
+                            }`}>
+                              {getCategoryLabel(tx.type, tx.category)}
                             </span>
                           </div>
-                          {tx.description && <p className="text-xs text-muted-foreground mt-1">{tx.description}</p>}
+                          {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
                         </div>
                         <span className={`font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
                           {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}

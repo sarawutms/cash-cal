@@ -78,11 +78,14 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                   <TableCell className="font-medium whitespace-nowrap">{formatDate(tx.date)}</TableCell>
                   <TableCell className="max-w-[150px] truncate">{tx.description || '-'}</TableCell>
                   <TableCell>
-                    <span className="inline-flex items-center whitespace-nowrap">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      tx.category === 'saving' 
+                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
+                        : tx.type === 'income' 
+                          ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 
+                          : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'
+                    }`}>
                       {getCategoryLabel(tx.type, tx.category)}
-                      <span className={`ml-2 text-[10px] px-1.5 py-0.5 rounded font-medium ${tx.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {tx.type === 'income' ? dict.transaction.income : dict.transaction.expense}
-                      </span>
                     </span>
                   </TableCell>
                   <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
