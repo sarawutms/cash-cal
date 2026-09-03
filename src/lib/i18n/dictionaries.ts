@@ -19,7 +19,8 @@ const dictionaries = {
       thisWeek: 'สัปดาห์นี้',
       thisMonth: 'เดือนนี้',
       thisYear: 'ปีนี้',
-      allTime: 'ทั้งหมด'
+      allTime: 'ทั้งหมด',
+      analytics: 'กราฟวิเคราะห์',
     },
     tabs: {
       calendar: 'มุมมองปฏิทิน',

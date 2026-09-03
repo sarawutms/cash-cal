@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Wallet, ArrowDownIcon, ArrowUpIcon, PiggyBankIcon } from 'lucide-react'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ExpenseChart } from './expense-chart'
+import { useState } from 'react'
 
 import { isSameWeek } from 'date-fns'
 
@@ -77,22 +79,40 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
     </div>
   )
 
+  const [activeTab, setActiveTab] = useState('month')
+  
+  const getActiveTransactions = () => {
+    switch(activeTab) {
+      case 'day': return transactions.filter(tx => tx.date === todayStr)
+      case 'week': return transactions.filter(tx => isSameWeek(new Date(tx.date), now, { weekStartsOn: 1 }))
+      case 'month': return transactions.filter(tx => tx.date.startsWith(currentMonthStr))
+      case 'year': return transactions.filter(tx => tx.date.startsWith(currentYearStr))
+      default: return transactions
+    }
+  }
+
   return (
-    <Tabs defaultValue="month" className="w-full">
-      <div className="mb-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-        <TabsList className="w-max sm:w-auto inline-flex">
-          <TabsTrigger value="day">{dict.dashboard.today}</TabsTrigger>
-          <TabsTrigger value="week">{dict.dashboard.thisWeek}</TabsTrigger>
-          <TabsTrigger value="month">{dict.dashboard.thisMonth}</TabsTrigger>
-          <TabsTrigger value="year">{dict.dashboard.thisYear}</TabsTrigger>
-          <TabsTrigger value="all">{dict.dashboard.allTime}</TabsTrigger>
-        </TabsList>
+    <div className="space-y-6">
+      <Tabs defaultValue="month" className="w-full" onValueChange={setActiveTab}>
+        <div className="mb-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+          <TabsList className="w-max sm:w-auto inline-flex">
+            <TabsTrigger value="day">{dict.dashboard.today}</TabsTrigger>
+            <TabsTrigger value="week">{dict.dashboard.thisWeek}</TabsTrigger>
+            <TabsTrigger value="month">{dict.dashboard.thisMonth}</TabsTrigger>
+            <TabsTrigger value="year">{dict.dashboard.thisYear}</TabsTrigger>
+            <TabsTrigger value="all">{dict.dashboard.allTime}</TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="day">{renderCards(todayStats)}</TabsContent>
+        <TabsContent value="week">{renderCards(weekStats)}</TabsContent>
+        <TabsContent value="month">{renderCards(monthStats)}</TabsContent>
+        <TabsContent value="year">{renderCards(yearStats)}</TabsContent>
+        <TabsContent value="all">{renderCards(allTimeStats)}</TabsContent>
+      </Tabs>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ExpenseChart transactions={getActiveTransactions()} dict={dict} />
       </div>
-      <TabsContent value="day">{renderCards(todayStats)}</TabsContent>
-      <TabsContent value="week">{renderCards(weekStats)}</TabsContent>
-      <TabsContent value="month">{renderCards(monthStats)}</TabsContent>
-      <TabsContent value="year">{renderCards(yearStats)}</TabsContent>
-      <TabsContent value="all">{renderCards(allTimeStats)}</TabsContent>
-    </Tabs>
+    </div>
   )
 }
