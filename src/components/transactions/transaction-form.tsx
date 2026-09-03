@@ -247,7 +247,7 @@ export function TransactionForm({
             <Input
               id="description"
               name="description"
-              placeholder="Lunch at KFC..."
+              placeholder=""
               defaultValue={transaction?.description}
             />
           </div>

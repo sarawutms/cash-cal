@@ -114,7 +114,7 @@ export function TopUpDialog({ user, dict }: { user: any; dict: Dictionary }) {
             <Input
               id="description"
               name="description"
-              placeholder="Transfer from KBank..."
+              placeholder=""
             />
           </div>
 
