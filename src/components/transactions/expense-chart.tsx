@@ -36,16 +36,16 @@ export function ExpenseChart({ transactions, dict }: { transactions: any[], dict
 
   return (
     <Card className="border-0 shadow-none md:border md:shadow-sm w-full h-full flex flex-col">
-      <CardHeader className="px-4 md:px-6 flex flex-row items-center justify-between pb-2">
-        <CardTitle>{dict.dashboard.analytics || 'Analytics'}</CardTitle>
-        <Tabs value={view} onValueChange={(v) => setView(v as any)} className="w-[200px]">
+      <CardHeader className="px-0 md:px-6 pt-4 md:pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2">
+        <CardTitle className="text-sm md:text-base font-medium">{dict.dashboard.analytics || 'Analytics'}</CardTitle>
+        <Tabs value={view} onValueChange={(v) => setView(v as any)} className="w-full sm:w-[200px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="expense">{dict.transaction.expense}</TabsTrigger>
             <TabsTrigger value="income">{dict.transaction.income}</TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
-      <CardContent className="px-4 md:px-6 pb-6 flex-1 min-h-[300px]">
+      <CardContent className="px-0 md:px-6 pb-6 flex-1 min-h-[300px]">
         {data.length === 0 ? (
           <div className="h-full flex items-center justify-center text-muted-foreground border rounded-lg bg-muted/20">
             {dict.transaction.empty}

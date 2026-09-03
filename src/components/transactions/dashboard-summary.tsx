@@ -37,7 +37,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
   const renderCards = (stats: { income: number, expense: number, saving: number, balance: number }) => (
     <div className="grid gap-2 sm:gap-4 grid-cols-2 md:grid-cols-4">
       <Card className="border-0 shadow-none md:border md:shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.balance}</CardTitle>
           <Wallet className="h-4 w-4 text-muted-foreground hidden sm:block" />
         </CardHeader>
@@ -49,7 +49,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       </Card>
       
       <Card className="border-0 shadow-none md:border md:shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.income}</CardTitle>
           <ArrowUpIcon className="h-4 w-4 text-emerald-600 hidden sm:block" />
         </CardHeader>
@@ -59,7 +59,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       </Card>
 
       <Card className="border-0 shadow-none md:border md:shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.expense}</CardTitle>
           <ArrowDownIcon className="h-4 w-4 text-rose-600 hidden sm:block" />
         </CardHeader>
@@ -69,7 +69,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       </Card>
 
       <Card className="border-0 shadow-none md:border md:shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.saving}</CardTitle>
           <PiggyBankIcon className="h-4 w-4 text-indigo-600 hidden sm:block" />
         </CardHeader>

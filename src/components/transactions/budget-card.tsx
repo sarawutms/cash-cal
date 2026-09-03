@@ -51,8 +51,8 @@ export function BudgetCard({ user, transactions, dict }: { user: any, transactio
 
   return (
     <Card className="border-0 shadow-none md:border md:shadow-sm w-full">
-      <CardHeader className="px-4 md:px-6 flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium">{dict.dashboard.budgetTitle || 'Monthly Budget'}</CardTitle>
+      <CardHeader className="px-0 md:px-6 pt-4 md:pt-6 flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-sm md:text-base font-medium">{dict.dashboard.budgetTitle || 'Monthly Budget'}</CardTitle>
         <Dialog open={isEditing} onOpenChange={setIsEditing}>
           <DialogTrigger render={
             <Button variant="ghost" size="icon" className="h-6 w-6">
@@ -79,7 +79,7 @@ export function BudgetCard({ user, transactions, dict }: { user: any, transactio
           </DialogContent>
         </Dialog>
       </CardHeader>
-      <CardContent className="px-4 md:px-6 pb-6">
+      <CardContent className="px-0 md:px-6 pb-6">
         {budget === 0 ? (
           <div className="text-sm text-muted-foreground">
             {dict.dashboard.noBudget || 'No budget set. Click the edit icon to set one.'}
