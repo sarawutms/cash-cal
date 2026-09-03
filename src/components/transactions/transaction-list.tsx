@@ -14,14 +14,20 @@ import { Trash2 } from "lucide-react";
 import { Dictionary } from "@/lib/i18n/dictionaries";
 import { EditTransactionDialog } from "./edit-transaction-dialog";
 
+import { isSameWeek, startOfWeek, endOfWeek } from "date-fns";
+
 export async function TransactionList({
   dict,
   user,
   limit = 50,
+  period = "all",
+  type = "all",
 }: {
   dict: Dictionary;
   user: any;
   limit?: number;
+  period?: string;
+  type?: string;
 }) {
   if (!user) {
     return (
@@ -39,14 +45,33 @@ export async function TransactionList({
   }
 
   const supabase = await createClient();
-  const query = supabase
+  let query = supabase
     .from("transactions")
     .select("*")
     .order("date", { ascending: false })
     .order("created_at", { ascending: false });
 
   if (limit > 0) {
-    query.limit(limit);
+    query = query.limit(limit);
+  }
+
+  if (type && type !== "all") {
+    query = query.eq("type", type);
+  }
+
+  const now = new Date();
+  const todayStr = now.toISOString().split("T")[0];
+
+  if (period === "day") {
+    query = query.eq("date", todayStr);
+  } else if (period === "week") {
+    const start = startOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
+    const end = endOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
+    query = query.gte("date", start).lte("date", end);
+  } else if (period === "month") {
+    query = query.gte("date", todayStr.substring(0, 7) + "-01").lte("date", todayStr.substring(0, 7) + "-31");
+  } else if (period === "year") {
+    query = query.gte("date", todayStr.substring(0, 4) + "-01-01").lte("date", todayStr.substring(0, 4) + "-12-31");
   }
 
   const { data: transactions } = await query;
