@@ -3,8 +3,10 @@ import "server-only";
 const dictionaries = {
   th: {
     app: {
-      title: "บันทึกรับ-จ่าย",
-      subtitle: "จัดการการเงินของคุณ",
+      title: "CashCal",
+      subtitle: "แอปคำนวณกระแสเงินสดส่วนตัวของคุณ",
+      navDashboard: "หน้าหลัก",
+      navTransactions: "ประวัติรายการ",
       login: "เข้าสู่ระบบ",
       logout: "ออกจากระบบ",
       language: "ภาษา",
@@ -130,6 +132,8 @@ const dictionaries = {
     app: {
       title: "CashCal",
       subtitle: "Manage your finances",
+      navDashboard: "Dashboard",
+      navTransactions: "Transactions",
       login: "Log in",
       logout: "Sign out",
       language: "Language",

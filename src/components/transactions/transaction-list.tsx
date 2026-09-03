@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -17,9 +17,11 @@ import { EditTransactionDialog } from "./edit-transaction-dialog";
 export async function TransactionList({
   dict,
   user,
+  limit = 50,
 }: {
   dict: Dictionary;
   user: any;
+  limit?: number;
 }) {
   if (!user) {
     return (
@@ -37,12 +39,17 @@ export async function TransactionList({
   }
 
   const supabase = await createClient();
-  const { data: transactions } = await supabase
+  const query = supabase
     .from("transactions")
     .select("*")
     .order("date", { ascending: false })
-    .order("created_at", { ascending: false })
-    .limit(50);
+    .order("created_at", { ascending: false });
+
+  if (limit > 0) {
+    query.limit(limit);
+  }
+
+  const { data: transactions } = await query;
 
   const getCategoryLabel = (type: string, key: string) => {
     const lowerKey = key ? key.toLowerCase() : "";
@@ -85,10 +92,16 @@ export async function TransactionList({
   return (
     <Card className="border-0 shadow-none md:border md:shadow-sm">
       <CardHeader className="px-0 md:px-6">
-        <CardTitle>{dict.transaction.recent}</CardTitle>
+        <CardTitle>
+          {limit > 0
+            ? dict.transaction.recent
+            : dict.app.navTransactions || "All Transactions"}
+        </CardTitle>
       </CardHeader>
       <CardContent className="px-0 md:px-6 pb-6">
-        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+        <div
+          className={`overflow-x-auto overflow-y-auto ${limit > 0 ? "max-h-[400px]" : "h-[calc(100vh-250px)] min-h-[500px]"}`}
+        >
           <Table>
             <TableHeader>
               <TableRow>

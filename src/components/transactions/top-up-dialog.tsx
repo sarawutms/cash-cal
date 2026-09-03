@@ -111,11 +111,7 @@ export function TopUpDialog({ user, dict }: { user: any; dict: Dictionary }) {
             <Label htmlFor="description">
               {dict.transaction.description || "Description"}
             </Label>
-            <Input
-              id="description"
-              name="description"
-              placeholder=""
-            />
+            <Input id="description" name="description" placeholder="" />
           </div>
 
           {user ? (
