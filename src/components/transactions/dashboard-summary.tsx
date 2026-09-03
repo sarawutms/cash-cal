@@ -7,7 +7,7 @@ import { ExpenseChart } from './expense-chart'
 import { BudgetCard } from './budget-card'
 import { TopUpDialog } from './top-up-dialog'
 
-export function DashboardSummary({ dict, user, allTransactions, filteredTransactions }: { dict: Dictionary, user: any, allTransactions: any[], filteredTransactions: any[] }) {
+export function DashboardSummary({ dict, user, allTransactions, filteredTransactions, period = 'month' }: { dict: Dictionary, user: any, allTransactions: any[], filteredTransactions: any[], period?: string }) {
   const calculateStats = (txs: any[]) => {
     let income = 0
     let expense = 0
@@ -24,6 +24,15 @@ export function DashboardSummary({ dict, user, allTransactions, filteredTransact
 
   const globalStats = calculateStats(allTransactions)
   const currentStats = calculateStats(filteredTransactions)
+
+  const getPeriodLabel = () => {
+    if (period === 'day') return dict.dashboard.today
+    if (period === 'week') return dict.dashboard.thisWeek
+    if (period === 'month') return dict.dashboard.thisMonth
+    if (period === 'year') return dict.dashboard.thisYear
+    return dict.dashboard.allTime
+  }
+  const periodLabel = getPeriodLabel()
 
   return (
     <div className="space-y-6">
@@ -48,7 +57,7 @@ export function DashboardSummary({ dict, user, allTransactions, filteredTransact
 
         <Card className="border-0 shadow-none md:border md:shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.income}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.income} <span className="font-normal text-muted-foreground hidden sm:inline">({periodLabel})</span></CardTitle>
             <ArrowUpIcon className="h-4 w-4 text-emerald-600 hidden sm:block" />
           </CardHeader>
           <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
@@ -58,7 +67,7 @@ export function DashboardSummary({ dict, user, allTransactions, filteredTransact
 
         <Card className="border-0 shadow-none md:border md:shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.expense}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.expense} <span className="font-normal text-muted-foreground hidden sm:inline">({periodLabel})</span></CardTitle>
             <ArrowDownIcon className="h-4 w-4 text-rose-600 hidden sm:block" />
           </CardHeader>
           <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
@@ -68,7 +77,7 @@ export function DashboardSummary({ dict, user, allTransactions, filteredTransact
 
         <Card className="border-0 shadow-none md:border md:shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.saving}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.saving} <span className="font-normal text-muted-foreground hidden sm:inline">({periodLabel})</span></CardTitle>
             <PiggyBankIcon className="h-4 w-4 text-indigo-600 hidden sm:block" />
           </CardHeader>
           <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">

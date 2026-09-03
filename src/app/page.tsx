@@ -78,7 +78,7 @@ export default async function HomePage(props: { searchParams: Promise<{ [key: st
           <DataActions dict={dict} transactions={allTransactions} user={user} />
         </div>
 
-        <DashboardSummary dict={dict} user={user} allTransactions={allTransactions} filteredTransactions={filteredTransactions} />
+        <DashboardSummary dict={dict} user={user} allTransactions={allTransactions} filteredTransactions={filteredTransactions} period={filterPeriod} />
         
         <Suspense fallback={<div className="h-[60px] bg-card rounded-xl border animate-pulse"></div>}>
           <TransactionFilter dict={dict} />
