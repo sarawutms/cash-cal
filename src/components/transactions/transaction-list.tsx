@@ -131,7 +131,7 @@ export async function TransactionList({
                     {tx.type === "income" || tx.type === "brought_forward"
                       ? "+"
                       : "-"}
-                    α╕┐
+                    ฿
                     {Number(tx.amount).toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,

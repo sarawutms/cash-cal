@@ -89,14 +89,14 @@ export function DashboardSummary({
           <div
             className={`text-lg sm:text-2xl font-bold ${allTimeStats.balance >= 0 ? "text-foreground" : "text-rose-600"}`}
           >
-            a++
+            ฿
             {allTimeStats.balance.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
           <div className="text-xs text-muted-foreground mt-1 font-medium">
-            {stats.balance >= 0 ? "+" : "-"} a++
+            {stats.balance >= 0 ? "+" : "-"} ฿
             {Math.abs(stats.balance).toLocaleString("en-US", {
               minimumFractionDigits: 2,
             })}{" "}
@@ -114,7 +114,7 @@ export function DashboardSummary({
         </CardHeader>
         <CardContent>
           <div className="text-lg sm:text-2xl font-bold text-emerald-600">
-            a++
+            ฿
             {stats.income.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
@@ -132,7 +132,7 @@ export function DashboardSummary({
         </CardHeader>
         <CardContent>
           <div className="text-lg sm:text-2xl font-bold text-rose-600">
-            a++
+            ฿
             {stats.expense.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
@@ -150,7 +150,7 @@ export function DashboardSummary({
         </CardHeader>
         <CardContent>
           <div className="text-lg sm:text-2xl font-bold text-indigo-600">
-            a++
+            ฿
             {stats.saving.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
