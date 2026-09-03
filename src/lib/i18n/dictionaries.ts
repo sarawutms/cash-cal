@@ -118,7 +118,8 @@ const dictionaries = {
       thisWeek: 'This Week',
       thisMonth: 'This Month',
       thisYear: 'This Year',
-      allTime: 'All Time'
+      allTime: 'All Time',
+      analytics: 'Analytics',
     },
     tabs: {
       calendar: 'Calendar View',

@@ -67,7 +67,7 @@ export function ExpenseChart({ transactions, dict }: { transactions: any[], dict
                 ))}
               </Pie>
               <Tooltip 
-                formatter={(value: number) => [`฿${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 'Amount']}
+                formatter={(value: any) => [`฿${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 'Amount']}
                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
               />
               <Legend verticalAlign="bottom" height={36} />
