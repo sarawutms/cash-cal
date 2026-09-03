@@ -90,7 +90,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                       {getCategoryLabel(tx.type, tx.category)}
                     </span>
                   </TableCell>
-                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'saving' || tx.category === 'saving' ? 'text-blue-600' : tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
                     {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell>

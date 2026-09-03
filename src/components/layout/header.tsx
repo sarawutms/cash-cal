@@ -21,7 +21,7 @@ export function Header({ user, dict, currentLang }: { user: any, dict: Dictionar
       <div>
         <h1 className="text-2xl md:text-3xl font-bold">{dict.app.title}</h1>
         {user ? (
-          <p className="text-sm md:text-base text-muted-foreground">{dict.app.welcome}, {user.email}</p>
+          <p className="text-sm md:text-base text-muted-foreground">{dict.app.welcome}, {user.user_metadata?.display_name || user.email}</p>
         ) : (
           <p className="text-sm md:text-base text-muted-foreground">{dict.app.subtitle}</p>
         )}
