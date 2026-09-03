@@ -62,7 +62,7 @@ export function ExpenseChart({ transactions, dict }: { transactions: any[], dict
                   outerRadius={95}
                   paddingAngle={5}
                   dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
                   labelLine={false}
                 >
                   {data.map((entry, index) => (
@@ -70,7 +70,7 @@ export function ExpenseChart({ transactions, dict }: { transactions: any[], dict
                   ))}
                 </Pie>
                 <Tooltip 
-                  formatter={(value: number) => `฿${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
+                  formatter={(value: any) => `฿${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
                   contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 />
                 <Legend verticalAlign="bottom" height={36} />
