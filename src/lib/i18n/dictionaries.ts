@@ -52,8 +52,9 @@ const dictionaries = {
           food: 'อาหาร/เครื่องดื่ม',
           transport: 'เดินทาง',
           utilities: 'บิล/สาธารณูปโภค',
-          entertainment: 'บันเทิง',
+          entertainment: 'บันเทิง/สังสรรค์',
           shopping: 'ช้อปปิ้ง',
+          saving: 'เงินออม/เงินเก็บ',
           other: 'อื่นๆ'
         },
         income: {
@@ -137,6 +138,7 @@ const dictionaries = {
           utilities: 'Utilities & Bills',
           entertainment: 'Entertainment',
           shopping: 'Shopping',
+          saving: 'Savings',
           other: 'Other'
         },
         income: {
