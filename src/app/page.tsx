@@ -49,13 +49,13 @@ export default async function HomePage() {
           </div>
 
           <TabsContent value="calendar" className="mt-0">
-            <CalendarView transactions={allTransactions} dict={dict} user={user} />
+            <CalendarView transactions={allTransactions} dict={dict} user={user} lang={lang} />
           </TabsContent>
           
           <TabsContent value="table" className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-1">
-                <TransactionForm user={user} dict={dict} />
+                <TransactionForm user={user} dict={dict} lang={lang} />
               </div>
               <div className="md:col-span-2">
                 <TransactionList user={user} dict={dict} />

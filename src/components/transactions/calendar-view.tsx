@@ -13,8 +13,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { th, enUS } from 'date-fns/locale'
 
-export function CalendarView({ transactions, dict, user }: { transactions: any[], dict: Dictionary, user: any }) {
+export function CalendarView({ transactions, dict, user, lang }: { transactions: any[], dict: Dictionary, user: any, lang: string }) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
@@ -79,6 +80,7 @@ export function CalendarView({ transactions, dict, user }: { transactions: any[]
                 onSelect={(date) => {
                   if (date) setCurrentDate(date)
                 }}
+                locale={lang === 'th' ? th : enUS}
               />
             </PopoverContent>
           </Popover>
@@ -176,7 +178,7 @@ export function CalendarView({ transactions, dict, user }: { transactions: any[]
               </div>
             </div>
             <div className="order-1 md:order-2">
-              <TransactionForm user={user} dict={dict} initialDate={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined} onSaved={() => setSelectedDate(null)} />
+              <TransactionForm user={user} dict={dict} initialDate={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined} onSaved={() => setSelectedDate(null)} lang={lang} />
             </div>
           </div>
         </DialogContent>

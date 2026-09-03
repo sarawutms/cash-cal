@@ -10,10 +10,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useFormStatus } from 'react-dom'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { LoginDialog } from '@/components/auth/login-dialog'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import { th, enUS } from 'date-fns/locale'
 
 
-export function TransactionForm({ user, dict, initialDate, onSaved }: { user: any, dict: Dictionary, initialDate?: string, onSaved?: () => void }) {
+export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' }: { user: any, dict: Dictionary, initialDate?: string, onSaved?: () => void, lang?: string }) {
   const [type, setType] = useState('expense')
+  const [date, setDate] = useState<Date>(initialDate ? new Date(initialDate) : new Date())
 
   const categoryKeys = type === 'expense'
     ? Object.keys(dict.transaction.categories.expense)
@@ -53,9 +60,31 @@ export function TransactionForm({ user, dict, initialDate, onSaved }: { user: an
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="date">{dict.transaction.date}</Label>
-              <Input id="date" name="date" type="date" required defaultValue={initialDate || new Date().toISOString().split('T')[0]} />
+            <div className="space-y-2 flex flex-col justify-end">
+              <Label htmlFor="date" className="mb-1">{dict.transaction.date}</Label>
+              <input type="hidden" name="date" value={format(date, 'yyyy-MM-dd')} />
+              <Popover>
+                <PopoverTrigger render={
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? `${date.getDate()} ${dict.calendar.months[date.getMonth()]} ${date.getFullYear()}` : <span>Pick a date</span>}
+                  </Button>
+                } />
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(d) => d && setDate(d)}
+                    locale={lang === 'th' ? th : enUS}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
