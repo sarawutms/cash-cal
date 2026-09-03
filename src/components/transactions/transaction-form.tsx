@@ -20,6 +20,7 @@ import { th, enUS } from 'date-fns/locale'
 
 export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' }: { user: any, dict: Dictionary, initialDate?: string, onSaved?: () => void, lang?: string }) {
   const [type, setType] = useState('expense')
+  const [category, setCategory] = useState<string>('')
   const [date, setDate] = useState<Date>(initialDate ? new Date(initialDate) : new Date())
 
   const categoryKeys = type === 'expense'
@@ -47,7 +48,10 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="type">{dict.transaction.type}</Label>
-              <Select name="type" value={type} onValueChange={(val) => setType(val as string)}>
+              <Select name="type" value={type} onValueChange={(val) => {
+                setType(val as string)
+                setCategory('')
+              }}>
                 <SelectTrigger>
                   <SelectValue placeholder={dict.transaction.type}>
                     {type === 'expense' ? dict.transaction.expense : dict.transaction.income}
@@ -95,9 +99,11 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
 
           <div className="space-y-2">
             <Label htmlFor="category">{dict.transaction.category}</Label>
-            <Select name="category" required>
+            <Select name="category" required value={category} onValueChange={(val) => setCategory(val || '')}>
               <SelectTrigger>
-                <SelectValue placeholder={dict.transaction.selectPlaceholder} />
+                <SelectValue placeholder={dict.transaction.selectPlaceholder}>
+                  {category ? getCategoryLabel(category) : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {categoryKeys.map(cat => (
