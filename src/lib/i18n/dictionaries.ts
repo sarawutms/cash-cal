@@ -61,7 +61,9 @@ const dictionaries = {
           freelance: 'อาชีพอิสระ',
           investment: 'การลงทุน',
           gift: 'ของขวัญ',
-          other: 'อื่นๆ'
+          bonus: 'โบนัส',
+          initial_balance: 'ยอดยกมา',
+          other: 'อื่นๆ',
         }
       }
     },
@@ -142,6 +144,8 @@ const dictionaries = {
           freelance: 'Freelance',
           investment: 'Investment',
           gift: 'Gift',
+          bonus: 'Bonus',
+          initial_balance: 'Initial Balance',
           other: 'Other'
         }
       }
