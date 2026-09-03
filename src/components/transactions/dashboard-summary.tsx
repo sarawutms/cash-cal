@@ -5,6 +5,7 @@ import { Wallet, ArrowDownIcon, ArrowUpIcon, PiggyBankIcon } from 'lucide-react'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ExpenseChart } from './expense-chart'
+import { BudgetCard } from './budget-card'
 import { useState } from 'react'
 
 import { isSameWeek } from 'date-fns'
@@ -111,6 +112,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       </Tabs>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <BudgetCard user={user} transactions={transactions} dict={dict} />
         <ExpenseChart transactions={getActiveTransactions()} dict={dict} />
       </div>
     </div>

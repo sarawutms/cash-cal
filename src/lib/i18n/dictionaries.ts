@@ -21,6 +21,10 @@ const dictionaries = {
       thisYear: 'ปีนี้',
       allTime: 'ทั้งหมด',
       analytics: 'กราฟวิเคราะห์',
+      budgetTitle: 'งบประมาณรายเดือน',
+      setBudget: 'ตั้งงบประมาณ',
+      noBudget: 'ยังไม่ได้ตั้งงบประมาณ กดไอคอน ✏️ เพื่อตั้งค่า',
+      overBudget: 'คุณใช้จ่ายเกินงบประมาณที่ตั้งไว้แล้ว!',
     },
     tabs: {
       calendar: 'มุมมองปฏิทิน',
@@ -120,6 +124,10 @@ const dictionaries = {
       thisYear: 'This Year',
       allTime: 'All Time',
       analytics: 'Analytics',
+      budgetTitle: 'Monthly Budget',
+      setBudget: 'Set Budget',
+      noBudget: 'No budget set. Click the ✏️ icon to set one.',
+      overBudget: 'You have exceeded your monthly budget!',
     },
     tabs: {
       calendar: 'Calendar View',
