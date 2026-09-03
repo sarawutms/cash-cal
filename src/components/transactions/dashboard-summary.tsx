@@ -120,9 +120,9 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
         <TabsContent value="all">{renderCards(allTimeStats)}</TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <BudgetCard user={user} transactions={transactions} dict={dict} />
-        <ExpenseChart transactions={getActiveTransactions()} dict={dict} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="lg:col-span-1 w-full"><BudgetCard user={user} transactions={transactions} dict={dict} /></div>
+        <div className="lg:col-span-2 w-full"><ExpenseChart transactions={getActiveTransactions()} dict={dict} /></div>
       </div>
     </div>
   )
