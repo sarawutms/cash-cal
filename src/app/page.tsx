@@ -36,7 +36,7 @@ export default async function HomePage() {
       <Header user={user} dict={dict} currentLang={lang} />
 
       <main className="space-y-6 md:space-y-8">
-        <DashboardSummary dict={dict} user={user} />
+        <DashboardSummary dict={dict} user={user} transactions={allTransactions} />
         
         <Tabs defaultValue="calendar" className="w-full">
           <div className="flex justify-between items-center mb-4 flex-wrap gap-4">

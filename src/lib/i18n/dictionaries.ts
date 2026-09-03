@@ -11,9 +11,13 @@ const dictionaries = {
       welcome: 'ยินดีต้อนรับ',
     },
     dashboard: {
-      balance: 'ยอดคงเหลือ',
+      balance: 'ยอดเงินคงเหลือ',
       income: 'รายรับรวม',
       expense: 'รายจ่ายรวม',
+      today: 'วันนี้',
+      thisMonth: 'เดือนนี้',
+      thisYear: 'ปีนี้',
+      allTime: 'ทั้งหมด'
     },
     tabs: {
       calendar: 'มุมมองปฏิทิน',
@@ -90,6 +94,10 @@ const dictionaries = {
       balance: 'Total Balance',
       income: 'Total Income',
       expense: 'Total Expenses',
+      today: 'Today',
+      thisMonth: 'This Month',
+      thisYear: 'This Year',
+      allTime: 'All Time'
     },
     tabs: {
       calendar: 'Calendar View',
