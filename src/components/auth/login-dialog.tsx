@@ -56,7 +56,7 @@ export function LoginDialog({ dict, trigger }: { dict: Dictionary, trigger?: Rea
             <form className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="signup-name">{dict.auth.displayName}</Label>
-                <Input id="signup-name" name="displayName" type="text" placeholder="John Doe" required />
+                <Input id="signup-name" name="displayName" type="text" placeholder={dict.auth.displayNamePlaceholder} required />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-email">{dict.auth.email}</Label>
