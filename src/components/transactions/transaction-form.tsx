@@ -136,7 +136,7 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
             <SubmitButton text={dict.transaction.save} loadingText={dict.transaction.saving} />
           ) : (
             <LoginDialog trigger={
-              <Button type="button" className="w-full bg-muted text-muted-foreground hover:bg-muted/80">
+              <Button id="login-dialog-trigger" type="button" className="w-full bg-muted text-muted-foreground hover:bg-muted/80">
                 {dict.transaction.loginRequired}
               </Button>
             } dict={dict} />

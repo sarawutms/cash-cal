@@ -14,9 +14,7 @@ export function LoginDialog({ dict, trigger }: { dict: Dictionary, trigger?: Rea
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {trigger ? (
-        <DialogTrigger render={<div id="login-dialog-trigger" className="w-full" />}>
-          {trigger}
-        </DialogTrigger>
+        <DialogTrigger render={trigger as React.ReactElement} />
       ) : (
         <DialogTrigger render={<Button id="login-dialog-trigger" variant="outline" />}>
           {dict.app.login}
