@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { TransactionForm } from '@/components/transactions/transaction-form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export function CalendarView({ transactions, dict, user }: { transactions: any[], dict: Dictionary, user: any }) {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -52,11 +53,48 @@ export function CalendarView({ transactions, dict, user }: { transactions: any[]
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-lg font-bold">
-          {dict.calendar.months[currentDate.getMonth()]} {currentDate.getFullYear()}
-        </CardTitle>
-        <div className="flex gap-2">
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-2 gap-4">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <Select 
+            value={currentDate.getMonth().toString()} 
+            onValueChange={(val) => {
+              if (!val) return;
+              const newDate = new Date(currentDate)
+              newDate.setMonth(parseInt(val))
+              setCurrentDate(newDate)
+            }}
+          >
+            <SelectTrigger className="w-[130px] font-bold text-lg h-10">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              {dict.calendar.months.map((m, i) => (
+                <SelectItem key={i} value={i.toString()}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          
+          <Select 
+            value={currentDate.getFullYear().toString()} 
+            onValueChange={(val) => {
+              if (!val) return;
+              const newDate = new Date(currentDate)
+              newDate.setFullYear(parseInt(val))
+              setCurrentDate(newDate)
+            }}
+          >
+            <SelectTrigger className="w-[100px] font-bold text-lg h-10">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              {Array.from({ length: 21 }).map((_, i) => {
+                const year = new Date().getFullYear() - 10 + i
+                return <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex gap-2 w-full sm:w-auto justify-end">
           <Button variant="outline" size="sm" onClick={prevMonth}><ChevronLeft className="h-4 w-4" /></Button>
           <Button variant="outline" size="sm" onClick={today}>{dict.calendar.today}</Button>
           <Button variant="outline" size="sm" onClick={nextMonth}><ChevronRight className="h-4 w-4" /></Button>
