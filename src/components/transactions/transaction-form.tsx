@@ -65,13 +65,31 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
               }}>
                 <SelectTrigger>
                   <SelectValue placeholder={dict.transaction.type}>
-                    {getTypeLabel(type)}
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${type === 'income' ? 'bg-emerald-500' : type === 'expense' ? 'bg-rose-500' : 'bg-indigo-500'}`} />
+                      {getTypeLabel(type)}
+                    </div>
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="expense">{dict.transaction.expense}</SelectItem>
-                  <SelectItem value="income">{dict.transaction.income}</SelectItem>
-                  <SelectItem value="saving">{dict.transaction.savingType}</SelectItem>
+                  <SelectItem value="expense">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-rose-500" />
+                      {dict.transaction.expense}
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="income">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                      {dict.transaction.income}
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="saving">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                      {dict.transaction.savingType}
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>

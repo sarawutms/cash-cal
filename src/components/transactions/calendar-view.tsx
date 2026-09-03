@@ -114,8 +114,8 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
 
             let bgColor = 'bg-muted/30'
             if (stats && stats.count > 0) {
-              if (net > 0) bgColor = 'bg-green-500/10 border-green-500/30'
-              else if (net < 0) bgColor = 'bg-red-500/10 border-red-500/30'
+              if (net > 0) bgColor = 'bg-emerald-500/10 border-emerald-500/30'
+              else if (net < 0) bgColor = 'bg-rose-500/10 border-rose-500/30'
               else bgColor = 'bg-amber-500/10 border-amber-500/30'
             }
 
@@ -132,7 +132,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                 
                 {stats && stats.count > 0 ? (
                   <div className="flex flex-col items-end mt-1">
-                    <span className={`text-[9px] md:text-xs font-bold truncate max-w-full ${net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <span className={`text-[9px] md:text-xs font-bold truncate max-w-full ${net >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                       {net >= 0 ? '+' : '-'}฿{Math.abs(net).toLocaleString('en-US', { notation: "compact", maximumFractionDigits: 1 })}
                     </span>
                   </div>
@@ -169,17 +169,17 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap ${
                               tx.type === 'saving' || tx.category === 'saving'
-                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
+                                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' 
                                 : tx.type === 'income' 
-                                  ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 
-                                  : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'
+                                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
+                                  : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
                             }`}>
                               {getCategoryLabel(tx.type, tx.category)}
                             </span>
                           </div>
                           {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
                         </div>
-                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-blue-600' : tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
                           {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </span>
                       </div>

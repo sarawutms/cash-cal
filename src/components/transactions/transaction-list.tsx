@@ -82,15 +82,15 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                   <TableCell>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       tx.type === 'saving' || tx.category === 'saving' 
-                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
+                        ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' 
                         : tx.type === 'income' 
-                          ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 
-                          : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
+                          : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
                     }`}>
                       {getCategoryLabel(tx.type, tx.category)}
                     </span>
                   </TableCell>
-                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'saving' || tx.category === 'saving' ? 'text-blue-600' : tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
                     {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell>
@@ -98,7 +98,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                       'use server'
                       await deleteTransaction(tx.id)
                     }}>
-                      <Button type="submit" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600">
+                      <Button type="submit" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-600">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </form>

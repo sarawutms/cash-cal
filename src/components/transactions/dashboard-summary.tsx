@@ -39,7 +39,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
           <Wallet className="h-4 w-4 text-muted-foreground hidden sm:block" />
         </CardHeader>
         <CardContent>
-          <div className={`text-lg sm:text-2xl font-bold ${stats.balance >= 0 ? 'text-foreground' : 'text-red-600'}`}>
+          <div className={`text-lg sm:text-2xl font-bold ${stats.balance >= 0 ? 'text-foreground' : 'text-rose-600'}`}>
             {stats.balance < 0 ? '-' : ''}฿{Math.abs(stats.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         </CardContent>
@@ -48,30 +48,30 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       <Card className="border-0 shadow-none md:border md:shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.income}</CardTitle>
-          <ArrowUpIcon className="h-4 w-4 text-green-600 hidden sm:block" />
+          <ArrowUpIcon className="h-4 w-4 text-emerald-600 hidden sm:block" />
         </CardHeader>
         <CardContent>
-          <div className="text-lg sm:text-2xl font-bold text-green-600">฿{stats.income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className="text-lg sm:text-2xl font-bold text-emerald-600">฿{stats.income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </CardContent>
       </Card>
 
       <Card className="border-0 shadow-none md:border md:shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.expense}</CardTitle>
-          <ArrowDownIcon className="h-4 w-4 text-red-600 hidden sm:block" />
+          <ArrowDownIcon className="h-4 w-4 text-rose-600 hidden sm:block" />
         </CardHeader>
         <CardContent>
-          <div className="text-lg sm:text-2xl font-bold text-red-600">฿{stats.expense.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className="text-lg sm:text-2xl font-bold text-rose-600">฿{stats.expense.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </CardContent>
       </Card>
 
       <Card className="border-0 shadow-none md:border md:shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.saving}</CardTitle>
-          <PiggyBankIcon className="h-4 w-4 text-blue-600 hidden sm:block" />
+          <PiggyBankIcon className="h-4 w-4 text-indigo-600 hidden sm:block" />
         </CardHeader>
         <CardContent>
-          <div className="text-lg sm:text-2xl font-bold text-blue-600">฿{stats.saving.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className="text-lg sm:text-2xl font-bold text-indigo-600">฿{stats.saving.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </CardContent>
       </Card>
     </div>
