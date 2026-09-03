@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, format, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns'
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { EditTransactionDialog } from './edit-transaction-dialog'
 import { TransactionForm } from '@/components/transactions/transaction-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -118,7 +119,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
             if (stats && stats.count > 0) {
               if (net > 0) bgColor = 'bg-emerald-500/10 border-emerald-500/30'
               else if (net < 0) bgColor = 'bg-rose-500/10 border-rose-500/30'
-              else bgColor = 'bg-amber-500/10 border-amber-500/30'
+              else bgColor = 'bg-slate-500/10 border-slate-500/30'
             }
 
             return (
@@ -173,7 +174,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                               tx.type === 'saving' || tx.category === 'saving'
                                 ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' 
                                 : tx.type === 'brought_forward'
-                                  ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'
+                                  ? 'bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-400'
                                   : tx.type === 'income' 
                                     ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
                                     : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
@@ -183,9 +184,22 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                           </div>
                           {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
                         </div>
-                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-amber-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                          {(tx.type === 'income' || tx.type === 'brought_forward') ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-slate-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                            {(tx.type === 'income' || tx.type === 'brought_forward') ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            <EditTransactionDialog transaction={tx} dict={dict} user={user} />
+                            <form action={async () => {
+                              const { deleteTransaction } = await import('@/lib/actions/transactions')
+                              await deleteTransaction(tx.id)
+                            }}>
+                              <Button type="submit" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-600">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </form>
+                          </div>
+                        </div>
                       </div>
                     ))
                 )}

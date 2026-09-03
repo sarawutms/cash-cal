@@ -86,7 +86,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                       tx.type === 'saving' || tx.category === 'saving' 
                         ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' 
                         : tx.type === 'brought_forward'
-                          ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'
+                          ? 'bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-400'
                           : tx.type === 'income' 
                             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
                             : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
@@ -94,7 +94,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                       {getCategoryLabel(tx.type, tx.category)}
                     </span>
                   </TableCell>
-                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-amber-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  <TableCell className={`text-right font-medium whitespace-nowrap ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-slate-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
                     {(tx.type === 'income' || tx.type === 'brought_forward') ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell>

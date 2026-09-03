@@ -6,6 +6,7 @@ import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ExpenseChart } from './expense-chart'
 import { BudgetCard } from './budget-card'
+import { TopUpDialog } from './top-up-dialog'
 import { useState } from 'react'
 
 import { isSameWeek } from 'date-fns'
@@ -41,7 +42,10 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       <Card className="border-0 shadow-none md:border md:shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.balance}</CardTitle>
-          <Wallet className="h-4 w-4 text-muted-foreground hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <TopUpDialog user={user} dict={dict} />
+            <Wallet className="h-4 w-4 text-muted-foreground hidden lg:block" />
+          </div>
         </CardHeader>
         <CardContent className="px-4 sm:px-6 py-4 sm:py-6 pt-0">
           <div className={`text-lg sm:text-2xl font-bold ${allTimeStats.balance >= 0 ? 'text-foreground' : 'text-rose-600'}`}>

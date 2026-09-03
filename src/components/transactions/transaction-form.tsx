@@ -80,7 +80,7 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th',
                 <SelectTrigger>
                   <SelectValue placeholder={dict.transaction.type}>
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${type === 'income' ? 'bg-emerald-500' : type === 'expense' ? 'bg-rose-500' : type === 'brought_forward' ? 'bg-amber-500' : 'bg-indigo-500'}`} />
+                      <div className={`w-2 h-2 rounded-full ${type === 'income' ? 'bg-emerald-500' : type === 'expense' ? 'bg-rose-500' : type === 'brought_forward' ? 'bg-slate-500' : 'bg-indigo-500'}`} />
                       {getTypeLabel(type)}
                     </div>
                   </SelectValue>
@@ -104,12 +104,14 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th',
                       {dict.transaction.savingType}
                     </div>
                   </SelectItem>
-                  <SelectItem value="brought_forward">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-amber-500" />
-                      {dict.transaction.broughtForward}
-                    </div>
-                  </SelectItem>
+                  {(type === 'brought_forward' || transaction?.type === 'brought_forward') && (
+                    <SelectItem value="brought_forward">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-slate-500" />
+                        {dict.transaction.broughtForward}
+                      </div>
+                    </SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
