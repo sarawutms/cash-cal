@@ -14,6 +14,7 @@ const dictionaries = {
       balance: 'ยอดเงินคงเหลือ',
       income: 'รายรับรวม',
       expense: 'รายจ่ายรวม',
+      saving: 'เงินออมรวม',
       today: 'วันนี้',
       thisWeek: 'สัปดาห์นี้',
       thisMonth: 'เดือนนี้',
@@ -34,17 +35,18 @@ const dictionaries = {
     transaction: {
       addTitle: 'เพิ่มรายการใหม่',
       type: 'ประเภท',
-      date: 'วันที่',
-      amount: 'จำนวนเงิน',
-      category: 'หมวดหมู่',
-      desc: 'รายละเอียด',
-      save: 'บันทึกข้อมูล',
-      saving: 'กำลังบันทึก...',
-      selectPlaceholder: 'เลือก...',
-      recent: 'รายการล่าสุด',
-      empty: 'ยังไม่มีรายการ (เพิ่มข้อมูลเพื่อเริ่มต้น!)',
       income: 'รายรับ',
       expense: 'รายจ่าย',
+      savingType: 'เงินออม',
+      date: 'วันที่',
+      amount: 'จำนวนเงิน (บาท)',
+      category: 'หมวดหมู่',
+      description: 'รายละเอียด (ตัวเลือก)',
+      save: 'บันทึกรายการ',
+      saving: 'กำลังบันทึก...',
+      selectPlaceholder: 'เลือกหมวดหมู่',
+      recent: 'รายการล่าสุด',
+      empty: 'ยังไม่มีรายการ (เพิ่มข้อมูลเพื่อเริ่มต้น!)',
       loginRequired: 'กรุณาเข้าสู่ระบบก่อนบันทึกข้อมูล',
       loginToView: 'เข้าสู่ระบบเพื่อดูรายการของคุณ',
       categories: {
@@ -54,7 +56,6 @@ const dictionaries = {
           utilities: 'บิล/สาธารณูปโภค',
           entertainment: 'บันเทิง/สังสรรค์',
           shopping: 'ช้อปปิ้ง',
-          saving: 'เงินออม/เงินเก็บ',
           other: 'อื่นๆ'
         },
         income: {
@@ -65,6 +66,13 @@ const dictionaries = {
           bonus: 'โบนัส',
           initial_balance: 'ยอดยกมา',
           other: 'อื่นๆ',
+        },
+        saving: {
+          bank: 'เงินฝากธนาคาร',
+          investment: 'ลงทุน/กองทุน/หุ้น',
+          crypto: 'คริปโต/สินทรัพย์ดิจิทัล',
+          piggy_bank: 'กระปุกออมสิน',
+          other: 'อื่นๆ'
         }
       }
     },
@@ -98,6 +106,7 @@ const dictionaries = {
       balance: 'Total Balance',
       income: 'Total Income',
       expense: 'Total Expenses',
+      saving: 'Total Savings',
       today: 'Today',
       thisWeek: 'This Week',
       thisMonth: 'This Month',
@@ -116,21 +125,22 @@ const dictionaries = {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     },
     transaction: {
-      addTitle: 'Add New Transaction',
+      addTitle: 'Add Transaction',
       type: 'Type',
+      income: 'Income',
+      expense: 'Expense',
+      savingType: 'Savings',
       date: 'Date',
       amount: 'Amount',
       category: 'Category',
-      desc: 'Description',
-      save: 'Add Transaction',
+      description: 'Description (Optional)',
+      save: 'Save Transaction',
       saving: 'Saving...',
-      selectPlaceholder: 'Select...',
+      selectPlaceholder: 'Select Category',
       recent: 'Recent Transactions',
-      empty: 'No transactions found. Add one to get started!',
-      income: 'Income',
-      expense: 'Expense',
-      loginRequired: 'Please log in to add transactions',
-      loginToView: 'Log in to view your transactions',
+      empty: 'No transactions yet (add one to start!)',
+      loginRequired: 'Please login to add transactions',
+      loginToView: 'Login to view your transactions',
       categories: {
         expense: {
           food: 'Food & Drinks',
@@ -138,7 +148,6 @@ const dictionaries = {
           utilities: 'Utilities & Bills',
           entertainment: 'Entertainment',
           shopping: 'Shopping',
-          saving: 'Savings',
           other: 'Other'
         },
         income: {
@@ -148,6 +157,13 @@ const dictionaries = {
           gift: 'Gift',
           bonus: 'Bonus',
           initial_balance: 'Initial Balance',
+          other: 'Other'
+        },
+        saving: {
+          bank: 'Bank Deposit',
+          investment: 'Investment/Stocks',
+          crypto: 'Crypto',
+          piggy_bank: 'Piggy Bank',
           other: 'Other'
         }
       }

@@ -29,9 +29,11 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
     .limit(50)
 
   const getCategoryLabel = (type: string, key: string) => {
-    const catType = type === 'expense' ? dict.transaction.categories.expense : dict.transaction.categories.income;
-    const lowerKey = key ? key.toLowerCase() : '';
-    return (catType as any)[lowerKey] || key;
+    const lowerKey = key ? key.toLowerCase() : ''
+    if (type === 'expense') return (dict.transaction.categories.expense as any)[lowerKey] || key
+    if (type === 'income') return (dict.transaction.categories.income as any)[lowerKey] || key
+    if (type === 'saving') return (dict.transaction.categories.saving as any)[lowerKey] || key
+    return key
   }
 
   const formatDate = (dateString: string) => {
@@ -66,7 +68,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
             <TableHeader>
               <TableRow>
                 <TableHead>{dict.transaction.date}</TableHead>
-                <TableHead>{dict.transaction.desc}</TableHead>
+                <TableHead>{dict.transaction.description}</TableHead>
                 <TableHead>{dict.transaction.category}</TableHead>
                 <TableHead className="text-right">{dict.transaction.amount}</TableHead>
                 <TableHead></TableHead>
@@ -79,7 +81,7 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                   <TableCell className="max-w-[150px] truncate">{tx.description || '-'}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      tx.category === 'saving' 
+                      tx.type === 'saving' || tx.category === 'saving' 
                         ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
                         : tx.type === 'income' 
                           ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 

@@ -35,23 +35,28 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
   const today = () => setCurrentDate(new Date())
 
   // Aggregate daily totals
-  const dailyStats = transactions.reduce((acc, tx) => {
-    const dateStr = format(new Date(tx.date), 'yyyy-MM-dd')
-    if (!acc[dateStr]) acc[dateStr] = { income: 0, expense: 0, count: 0 }
-    if (tx.type === 'income') acc[dateStr].income += Number(tx.amount)
-    if (tx.type === 'expense') acc[dateStr].expense += Number(tx.amount)
-    acc[dateStr].count += 1
-    return acc
-  }, {} as Record<string, { income: number, expense: number, count: number }>)
+  const dailyStats: Record<string, { income: number, expense: number, saving: number, count: number }> = {}
+  transactions.forEach(tx => {
+    const date = tx.date
+    if (!dailyStats[date]) {
+      dailyStats[date] = { income: 0, expense: 0, saving: 0, count: 0 }
+    }
+    dailyStats[date].count += 1
+    if (tx.type === 'income') dailyStats[date].income += Number(tx.amount)
+    else if (tx.type === 'expense') dailyStats[date].expense += Number(tx.amount)
+    else if (tx.type === 'saving') dailyStats[date].saving += Number(tx.amount)
+  })
 
   const formatFullDate = (d: Date) => {
     return `${d.getDate()} ${dict.calendar.months[d.getMonth()]} ${d.getFullYear()}`
   }
 
   const getCategoryLabel = (type: string, key: string) => {
-    const catType = type === 'expense' ? dict.transaction.categories.expense : dict.transaction.categories.income;
-    const lowerKey = key ? key.toLowerCase() : '';
-    return (catType as any)[lowerKey] || key;
+    const lowerKey = key ? key.toLowerCase() : ''
+    if (type === 'expense') return (dict.transaction.categories.expense as any)[lowerKey] || key
+    if (type === 'income') return (dict.transaction.categories.income as any)[lowerKey] || key
+    if (type === 'saving') return (dict.transaction.categories.saving as any)[lowerKey] || key
+    return key
   }
 
   const weekdays = dict.calendar.weekdays
@@ -105,7 +110,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
             const stats = dailyStats[dateStr]
             const isCurrentMonth = isSameMonth(day, monthStart)
             const isToday = isSameDay(day, new Date())
-            const net = stats ? stats.income - stats.expense : 0
+            const net = stats ? stats.income - stats.expense - stats.saving : 0
 
             let bgColor = 'bg-muted/30'
             if (stats && stats.count > 0) {
@@ -163,7 +168,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                         <div>
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap ${
-                              tx.category === 'saving' 
+                              tx.type === 'saving' || tx.category === 'saving'
                                 ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' 
                                 : tx.type === 'income' 
                                   ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' 
@@ -174,7 +179,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                           </div>
                           {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
                         </div>
-                        <span className={`font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-blue-600' : tx.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
                           {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </span>
                       </div>

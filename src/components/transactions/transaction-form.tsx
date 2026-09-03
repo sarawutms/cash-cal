@@ -25,11 +25,20 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
 
   const categoryKeys = type === 'expense'
     ? Object.keys(dict.transaction.categories.expense)
-    : Object.keys(dict.transaction.categories.income)
-    
+    : type === 'income' 
+      ? Object.keys(dict.transaction.categories.income)
+      : Object.keys(dict.transaction.categories.saving)
+
   const getCategoryLabel = (key: string) => {
     if (type === 'expense') return (dict.transaction.categories.expense as any)[key]
-    return (dict.transaction.categories.income as any)[key]
+    if (type === 'income') return (dict.transaction.categories.income as any)[key]
+    return (dict.transaction.categories.saving as any)[key]
+  }
+
+  const getTypeLabel = (t: string) => {
+    if (t === 'expense') return dict.transaction.expense
+    if (t === 'income') return dict.transaction.income
+    return dict.transaction.savingType
   }
 
   return (
@@ -39,10 +48,12 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
       </CardHeader>
       <CardContent className="px-0 md:px-6">
         <form action={async (formData) => {
-          if (user) {
-            await addTransaction(formData)
-            if (onSaved) onSaved()
+          if (!user) {
+            document.getElementById('login-dialog-trigger')?.click()
+            return
           }
+          await addTransaction(formData)
+          if (onSaved) onSaved()
         }} className="space-y-4">
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -54,12 +65,13 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
               }}>
                 <SelectTrigger>
                   <SelectValue placeholder={dict.transaction.type}>
-                    {type === 'expense' ? dict.transaction.expense : dict.transaction.income}
+                    {getTypeLabel(type)}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="expense">{dict.transaction.expense}</SelectItem>
                   <SelectItem value="income">{dict.transaction.income}</SelectItem>
+                  <SelectItem value="saving">{dict.transaction.savingType}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -116,8 +128,8 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">{dict.transaction.desc}</Label>
-            <Input id="description" name="description" placeholder="..." />
+            <Label htmlFor="description">{dict.transaction.description}</Label>
+            <Input id="description" name="description" placeholder="Lunch at KFC..." />
           </div>
 
           {user ? (
