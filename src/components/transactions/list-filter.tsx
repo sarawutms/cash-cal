@@ -1,7 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Dictionary } from "@/lib/i18n/dictionaries";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -15,13 +21,13 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
 
   const updateFilters = (period: string | null, type: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
-    
+
     if (period && period !== "all") params.set("period", period);
     else params.delete("period");
 
     if (type && type !== "all") params.set("type", type);
     else params.delete("type");
-    
+
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -42,11 +48,21 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
             <SelectValue placeholder={dict.dashboard?.allTime || "Period"} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{dict.dashboard?.allTime || "All Time"}</SelectItem>
-            <SelectItem value="day">{dict.dashboard?.today || "Today"}</SelectItem>
-            <SelectItem value="week">{dict.dashboard?.thisWeek || "This Week"}</SelectItem>
-            <SelectItem value="month">{dict.dashboard?.thisMonth || "This Month"}</SelectItem>
-            <SelectItem value="year">{dict.dashboard?.thisYear || "This Year"}</SelectItem>
+            <SelectItem value="all">
+              {dict.dashboard?.allTime || "All Time"}
+            </SelectItem>
+            <SelectItem value="day">
+              {dict.dashboard?.today || "Today"}
+            </SelectItem>
+            <SelectItem value="week">
+              {dict.dashboard?.thisWeek || "This Week"}
+            </SelectItem>
+            <SelectItem value="month">
+              {dict.dashboard?.thisMonth || "This Month"}
+            </SelectItem>
+            <SelectItem value="year">
+              {dict.dashboard?.thisYear || "This Year"}
+            </SelectItem>
           </SelectContent>
         </Select>
 
@@ -58,18 +74,26 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
             <SelectValue placeholder={dict.transaction?.type || "Type"} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{dict.transaction?.allTypes || "All Types"}</SelectItem>
-            <SelectItem value="income">{dict.transaction?.income || "Income"}</SelectItem>
-            <SelectItem value="expense">{dict.transaction?.expense || "Expense"}</SelectItem>
-            <SelectItem value="saving">{dict.transaction?.savingType || "Saving"}</SelectItem>
+            <SelectItem value="all">
+              {dict.transaction?.allTypes || "All Types"}
+            </SelectItem>
+            <SelectItem value="income">
+              {dict.transaction?.income || "Income"}
+            </SelectItem>
+            <SelectItem value="expense">
+              {dict.transaction?.expense || "Expense"}
+            </SelectItem>
+            <SelectItem value="saving">
+              {dict.transaction?.savingType || "Saving"}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {hasFilters && (
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={clearFilters}
           className="h-10 w-10 shrink-0 text-muted-foreground hover:text-foreground"
           title="Clear filters"

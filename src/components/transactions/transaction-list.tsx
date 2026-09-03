@@ -65,13 +65,19 @@ export async function TransactionList({
   if (period === "day") {
     query = query.eq("date", todayStr);
   } else if (period === "week") {
-    const start = startOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
+    const start = startOfWeek(now, { weekStartsOn: 1 })
+      .toISOString()
+      .split("T")[0];
     const end = endOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
     query = query.gte("date", start).lte("date", end);
   } else if (period === "month") {
-    query = query.gte("date", todayStr.substring(0, 7) + "-01").lte("date", todayStr.substring(0, 7) + "-31");
+    query = query
+      .gte("date", todayStr.substring(0, 7) + "-01")
+      .lte("date", todayStr.substring(0, 7) + "-31");
   } else if (period === "year") {
-    query = query.gte("date", todayStr.substring(0, 4) + "-01-01").lte("date", todayStr.substring(0, 4) + "-12-31");
+    query = query
+      .gte("date", todayStr.substring(0, 4) + "-01-01")
+      .lte("date", todayStr.substring(0, 4) + "-12-31");
   }
 
   const { data: transactions } = await query;
