@@ -5,6 +5,7 @@ import { Dictionary } from '@/lib/i18n/dictionaries'
 import { logout } from '@/app/login/actions'
 import { LoginDialog } from '@/components/auth/login-dialog'
 import { useRouter } from 'next/navigation'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export function Header({ user, dict, currentLang }: { user: any, dict: Dictionary, currentLang: string }) {
   const router = useRouter()
@@ -26,6 +27,7 @@ export function Header({ user, dict, currentLang }: { user: any, dict: Dictionar
         )}
       </div>
       <div className="flex gap-4 items-center">
+        <ThemeToggle />
         <Button variant="ghost" onClick={toggleLanguage}>
           {currentLang === 'th' ? 'EN' : 'TH'}
         </Button>
