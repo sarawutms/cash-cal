@@ -27,17 +27,21 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th',
     ? Object.keys(dict.transaction.categories.expense)
     : type === 'income' 
       ? Object.keys(dict.transaction.categories.income)
-      : Object.keys(dict.transaction.categories.saving)
+      : type === 'brought_forward'
+        ? Object.keys(dict.transaction.categories.brought_forward)
+        : Object.keys(dict.transaction.categories.saving)
 
   const getCategoryLabel = (key: string) => {
     if (type === 'expense') return (dict.transaction.categories.expense as any)[key]
     if (type === 'income') return (dict.transaction.categories.income as any)[key]
+    if (type === 'brought_forward') return (dict.transaction.categories.brought_forward as any)[key]
     return (dict.transaction.categories.saving as any)[key]
   }
 
   const getTypeLabel = (t: string) => {
     if (t === 'expense') return dict.transaction.expense
     if (t === 'income') return dict.transaction.income
+    if (t === 'brought_forward') return dict.transaction.broughtForward
     return dict.transaction.savingType
   }
 
@@ -76,7 +80,7 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th',
                 <SelectTrigger>
                   <SelectValue placeholder={dict.transaction.type}>
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${type === 'income' ? 'bg-emerald-500' : type === 'expense' ? 'bg-rose-500' : 'bg-indigo-500'}`} />
+                      <div className={`w-2 h-2 rounded-full ${type === 'income' ? 'bg-emerald-500' : type === 'expense' ? 'bg-rose-500' : type === 'brought_forward' ? 'bg-amber-500' : 'bg-indigo-500'}`} />
                       {getTypeLabel(type)}
                     </div>
                   </SelectValue>
@@ -98,6 +102,12 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th',
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-indigo-500" />
                       {dict.transaction.savingType}
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="brought_forward">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-amber-500" />
+                      {dict.transaction.broughtForward}
                     </div>
                   </SelectItem>
                 </SelectContent>

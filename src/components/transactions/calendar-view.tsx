@@ -35,16 +35,17 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
   const today = () => setCurrentDate(new Date())
 
   // Aggregate daily totals
-  const dailyStats: Record<string, { income: number, expense: number, saving: number, count: number }> = {}
+  const dailyStats: Record<string, { income: number, expense: number, saving: number, broughtForward: number, count: number }> = {}
   transactions.forEach(tx => {
     const date = tx.date
     if (!dailyStats[date]) {
-      dailyStats[date] = { income: 0, expense: 0, saving: 0, count: 0 }
+      dailyStats[date] = { income: 0, expense: 0, saving: 0, broughtForward: 0, count: 0 }
     }
     dailyStats[date].count += 1
     if (tx.type === 'income') dailyStats[date].income += Number(tx.amount)
     else if (tx.type === 'expense') dailyStats[date].expense += Number(tx.amount)
     else if (tx.type === 'saving') dailyStats[date].saving += Number(tx.amount)
+    else if (tx.type === 'brought_forward') dailyStats[date].broughtForward += Number(tx.amount)
   })
 
   const formatFullDate = (d: Date) => {
@@ -55,6 +56,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
     const lowerKey = key ? key.toLowerCase() : ''
     if (type === 'expense') return (dict.transaction.categories.expense as any)[lowerKey] || key
     if (type === 'income') return (dict.transaction.categories.income as any)[lowerKey] || key
+    if (type === 'brought_forward') return (dict.transaction.categories.brought_forward as any)[lowerKey] || key
     if (type === 'saving') return (dict.transaction.categories.saving as any)[lowerKey] || key
     return key
   }
@@ -110,7 +112,7 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
             const stats = dailyStats[dateStr]
             const isCurrentMonth = isSameMonth(day, monthStart)
             const isToday = isSameDay(day, new Date())
-            const net = stats ? stats.income - stats.expense - stats.saving : 0
+            const net = stats ? stats.income + stats.broughtForward - stats.expense - stats.saving : 0
 
             let bgColor = 'bg-muted/30'
             if (stats && stats.count > 0) {
@@ -170,17 +172,19 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
                             <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap ${
                               tx.type === 'saving' || tx.category === 'saving'
                                 ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' 
-                                : tx.type === 'income' 
-                                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
-                                  : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
+                                : tx.type === 'brought_forward'
+                                  ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'
+                                  : tx.type === 'income' 
+                                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' 
+                                    : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'
                             }`}>
                               {getCategoryLabel(tx.type, tx.category)}
                             </span>
                           </div>
                           {tx.description && <p className="text-xs text-muted-foreground mt-1 ml-1">{tx.description}</p>}
                         </div>
-                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                          {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        <span className={`font-bold ${tx.type === 'saving' || tx.category === 'saving' ? 'text-indigo-600' : tx.type === 'brought_forward' ? 'text-amber-600' : tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                          {(tx.type === 'income' || tx.type === 'brought_forward') ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </span>
                       </div>
                     ))

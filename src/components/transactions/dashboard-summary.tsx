@@ -15,12 +15,14 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
     let income = 0
     let expense = 0
     let saving = 0
+    let broughtForward = 0
     txs.forEach(tx => {
       if (tx.type === 'income') income += Number(tx.amount)
       else if (tx.type === 'expense') expense += Number(tx.amount)
       else if (tx.type === 'saving') saving += Number(tx.amount)
+      else if (tx.type === 'brought_forward') broughtForward += Number(tx.amount)
     })
-    return { income, expense, saving, balance: income - expense - saving }
+    return { income, expense, saving, broughtForward, balance: income + broughtForward - expense - saving }
   }
 
   const now = new Date()
@@ -34,7 +36,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
   const yearStats = calculateStats(transactions.filter(tx => tx.date.startsWith(currentYearStr)))
   const allTimeStats = calculateStats(transactions)
 
-  const renderCards = (stats: { income: number, expense: number, saving: number, balance: number }) => (
+  const renderCards = (stats: { income: number, expense: number, saving: number, broughtForward: number, balance: number }) => (
     <div className="grid gap-2 sm:gap-4 grid-cols-2 md:grid-cols-4">
       <Card className="border-0 shadow-none md:border md:shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">

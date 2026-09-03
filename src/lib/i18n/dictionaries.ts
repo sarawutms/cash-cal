@@ -44,6 +44,7 @@ const dictionaries = {
       income: 'รายรับ',
       expense: 'รายจ่าย',
       savingType: 'เงินออม',
+      broughtForward: 'ยอดยกมา (เงินโอนเข้า)',
       date: 'วันที่',
       amount: 'จำนวนเงิน',
       category: 'หมวดหมู่',
@@ -53,33 +54,34 @@ const dictionaries = {
       saving: 'กำลังบันทึก...',
       selectPlaceholder: 'เลือกหมวดหมู่',
       recent: 'รายการล่าสุด',
-      empty: 'ยังไม่มีรายการ (เพิ่มข้อมูลเพื่อเริ่มต้น!)',
-      loginRequired: 'กรุณาเข้าสู่ระบบก่อนบันทึกข้อมูล',
+      empty: 'ยังไม่มีรายการ (เพิ่มรายการแรกเลย!)',
+      loginRequired: 'กรุณาเข้าสู่ระบบเพื่อเพิ่มรายการ',
       loginToView: 'เข้าสู่ระบบเพื่อดูรายการของคุณ',
       categories: {
         expense: {
-          food: 'อาหาร/เครื่องดื่ม',
+          food: 'อาหาร',
           transport: 'เดินทาง',
-          utilities: 'บิล/สาธารณูปโภค',
-          entertainment: 'บันเทิง/สังสรรค์',
           shopping: 'ช้อปปิ้ง',
+          bills: 'บิล/ค่าสาธารณูปโภค',
+          entertainment: 'บันเทิง',
+          health: 'สุขภาพ',
           other: 'อื่นๆ'
         },
         income: {
           salary: 'เงินเดือน',
-          freelance: 'อาชีพอิสระ',
+          freelance: 'ฟรีแลนซ์',
           investment: 'การลงทุน',
-          gift: 'ของขวัญ',
-          bonus: 'โบนัส',
-          initial_balance: 'ยอดยกมา',
-          other: 'อื่นๆ',
+          other: 'อื่นๆ'
         },
         saving: {
-          bank: 'เงินฝากธนาคาร',
-          investment: 'ลงทุน/กองทุน/หุ้น',
-          crypto: 'คริปโต/สินทรัพย์ดิจิทัล',
-          piggy_bank: 'กระปุกออมสิน',
-          other: 'อื่นๆ'
+          bank: 'ฝากธนาคาร',
+          investment: 'ลงทุน/หุ้น',
+          crypto: 'คริปโต',
+          piggybank: 'หยอดกระปุก'
+        },
+        brought_forward: {
+          transfer: 'โอนจากบัญชีอื่น',
+          initial: 'เงินตั้งต้น'
         }
       }
     },
@@ -149,6 +151,7 @@ const dictionaries = {
       income: 'Income',
       expense: 'Expense',
       savingType: 'Savings',
+      broughtForward: 'Brought Forward (Transfer In)',
       date: 'Date',
       amount: 'Amount',
       category: 'Category',
@@ -163,28 +166,29 @@ const dictionaries = {
       loginToView: 'Login to view your transactions',
       categories: {
         expense: {
-          food: 'Food & Drinks',
+          food: 'Food',
           transport: 'Transport',
-          utilities: 'Utilities & Bills',
-          entertainment: 'Entertainment',
           shopping: 'Shopping',
+          bills: 'Bills',
+          entertainment: 'Entertainment',
+          health: 'Health',
           other: 'Other'
         },
         income: {
           salary: 'Salary',
           freelance: 'Freelance',
           investment: 'Investment',
-          gift: 'Gift',
-          bonus: 'Bonus',
-          initial_balance: 'Initial Balance',
           other: 'Other'
         },
         saving: {
-          bank: 'Bank Deposit',
+          bank: 'Bank Account',
           investment: 'Investment/Stocks',
           crypto: 'Crypto',
-          piggy_bank: 'Piggy Bank',
-          other: 'Other'
+          piggybank: 'Piggy Bank'
+        },
+        brought_forward: {
+          transfer: 'Transfer from other account',
+          initial: 'Initial Balance'
         }
       }
     },
