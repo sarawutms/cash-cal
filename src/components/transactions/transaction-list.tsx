@@ -5,6 +5,7 @@ import { deleteTransaction } from '@/lib/actions/transactions'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
 import { Dictionary } from '@/lib/i18n/dictionaries'
+import { EditTransactionDialog } from './edit-transaction-dialog'
 
 export async function TransactionList({ dict, user }: { dict: Dictionary, user: any }) {
   if (!user) {
@@ -94,14 +95,17 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
                     {tx.type === 'income' ? '+' : '-'}฿{Number(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell>
-                    <form action={async () => {
-                      'use server'
-                      await deleteTransaction(tx.id)
-                    }}>
-                      <Button type="submit" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-600">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </form>
+                    <div className="flex items-center gap-1">
+                      <EditTransactionDialog transaction={tx} dict={dict} user={user} />
+                      <form action={async () => {
+                        'use server'
+                        await deleteTransaction(tx.id)
+                      }}>
+                        <Button type="submit" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-600">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </form>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

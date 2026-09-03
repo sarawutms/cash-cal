@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { addTransaction } from '@/lib/actions/transactions'
+import { addTransaction, updateTransaction } from '@/lib/actions/transactions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,10 +18,10 @@ import { format } from 'date-fns'
 import { th, enUS } from 'date-fns/locale'
 
 
-export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' }: { user: any, dict: Dictionary, initialDate?: string, onSaved?: () => void, lang?: string }) {
-  const [type, setType] = useState('expense')
-  const [category, setCategory] = useState<string>('')
-  const [date, setDate] = useState<Date>(initialDate ? new Date(initialDate) : new Date())
+export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th', transaction, isDialog = false }: { user: any, dict: Dictionary, initialDate?: string, onSaved?: () => void, lang?: string, transaction?: any, isDialog?: boolean }) {
+  const [type, setType] = useState(transaction?.type || 'expense')
+  const [category, setCategory] = useState<string>(transaction?.category || '')
+  const [date, setDate] = useState<Date>(transaction?.date ? new Date(transaction.date) : initialDate ? new Date(initialDate) : new Date())
 
   const categoryKeys = type === 'expense'
     ? Object.keys(dict.transaction.categories.expense)
@@ -41,18 +41,28 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
     return dict.transaction.savingType
   }
 
+  const FormWrapper = isDialog ? 'div' : Card
+  const HeaderWrapper = isDialog ? 'div' : CardHeader
+  const ContentWrapper = isDialog ? 'div' : CardContent
+  const TitleWrapper = isDialog ? 'h2' : CardTitle
+
   return (
-    <Card className="border-0 shadow-none md:border md:shadow-sm">
-      <CardHeader className="px-0 md:px-6">
-        <CardTitle>{dict.transaction.addTitle}</CardTitle>
-      </CardHeader>
-      <CardContent className="px-0 md:px-6">
+    <FormWrapper className={isDialog ? "" : "border-0 shadow-none md:border md:shadow-sm"}>
+      <HeaderWrapper className={isDialog ? "mb-4" : "px-0 md:px-6"}>
+        <TitleWrapper className={isDialog ? "text-lg font-semibold" : ""}>{transaction ? (dict.transaction.editTitle || 'Edit Transaction') : dict.transaction.addTitle}</TitleWrapper>
+      </HeaderWrapper>
+      <ContentWrapper className={isDialog ? "" : "px-0 md:px-6"}>
         <form action={async (formData) => {
           if (!user) {
             document.getElementById('login-dialog-trigger')?.click()
             return
           }
-          await addTransaction(formData)
+          if (transaction) {
+            formData.append('id', transaction.id)
+            await updateTransaction(formData)
+          } else {
+            await addTransaction(formData)
+          }
           if (onSaved) onSaved()
         }} className="space-y-4">
           
@@ -124,7 +134,7 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
 
           <div className="space-y-2">
             <Label htmlFor="amount">{dict.transaction.amount}</Label>
-            <Input id="amount" name="amount" type="number" step="0.01" required placeholder="0.00" />
+            <Input id="amount" name="amount" type="number" step="0.01" required placeholder="0.00" defaultValue={transaction?.amount} />
           </div>
 
           <div className="space-y-2">
@@ -147,11 +157,11 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
 
           <div className="space-y-2">
             <Label htmlFor="description">{dict.transaction.description}</Label>
-            <Input id="description" name="description" placeholder="Lunch at KFC..." />
+            <Input id="description" name="description" placeholder="Lunch at KFC..." defaultValue={transaction?.description} />
           </div>
 
           {user ? (
-            <SubmitButton text={dict.transaction.save} loadingText={dict.transaction.saving} />
+            <SubmitButton text={transaction ? (dict.transaction.update || 'Update') : dict.transaction.save} loadingText={dict.transaction.saving} />
           ) : (
             <LoginDialog trigger={
               <Button id="login-dialog-trigger" type="button" className="w-full bg-muted text-muted-foreground hover:bg-muted/80">
@@ -160,8 +170,8 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
             } dict={dict} />
           )}
         </form>
-      </CardContent>
-    </Card>
+      </ContentWrapper>
+    </FormWrapper>
   )
 }
 
