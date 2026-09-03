@@ -9,6 +9,10 @@ import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { TransactionForm } from '@/components/transactions/transaction-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export function CalendarView({ transactions, dict, user }: { transactions: any[], dict: Dictionary, user: any }) {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -55,44 +59,29 @@ export function CalendarView({ transactions, dict, user }: { transactions: any[]
     <Card>
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-2 gap-4">
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Select 
-            value={currentDate.getMonth().toString()} 
-            onValueChange={(val) => {
-              if (!val) return;
-              const newDate = new Date(currentDate)
-              newDate.setMonth(parseInt(val))
-              setCurrentDate(newDate)
-            }}
-          >
-            <SelectTrigger className="w-[130px] font-bold text-lg h-10">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              {dict.calendar.months.map((m, i) => (
-                <SelectItem key={i} value={i.toString()}>{m}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          
-          <Select 
-            value={currentDate.getFullYear().toString()} 
-            onValueChange={(val) => {
-              if (!val) return;
-              const newDate = new Date(currentDate)
-              newDate.setFullYear(parseInt(val))
-              setCurrentDate(newDate)
-            }}
-          >
-            <SelectTrigger className="w-[100px] font-bold text-lg h-10">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              {Array.from({ length: 21 }).map((_, i) => {
-                const year = new Date().getFullYear() - 10 + i
-                return <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-              })}
-            </SelectContent>
-          </Select>
+          <Popover>
+            <PopoverTrigger render={
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-[200px] justify-start text-left font-bold text-lg h-10",
+                  !currentDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {currentDate ? formatFullDate(currentDate) : <span>Select date</span>}
+              </Button>
+            } />
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={currentDate}
+                onSelect={(date) => {
+                  if (date) setCurrentDate(date)
+                }}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
         <div className="flex gap-2 w-full sm:w-auto justify-end">
           <Button variant="outline" size="sm" onClick={prevMonth}><ChevronLeft className="h-4 w-4" /></Button>
