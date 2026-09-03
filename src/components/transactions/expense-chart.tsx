@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dictionary } from '@/lib/i18n/dictionaries'
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { useState } from 'react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -45,34 +45,38 @@ export function ExpenseChart({ transactions, dict }: { transactions: any[], dict
           </TabsList>
         </Tabs>
       </CardHeader>
-      <CardContent className="px-0 md:px-6 pb-6 flex-1 min-h-[300px]">
+      <CardContent className="px-0 md:px-6 pb-6 flex-1">
         {data.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-muted-foreground border rounded-lg bg-muted/20">
+          <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground border rounded-lg bg-muted/20">
             {dict.transaction.empty}
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip 
-                formatter={(value: any) => [`฿${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 'Amount']}
-                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-              />
-              <Legend verticalAlign="bottom" height={36} />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="w-full h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={95}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  labelLine={false}
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value: number) => `฿${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
+                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                />
+                <Legend verticalAlign="bottom" height={36} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         )}
       </CardContent>
     </Card>
