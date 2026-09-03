@@ -45,23 +45,23 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
           onValueChange={(v) => updateFilters(v, currentType)}
         >
           <SelectTrigger className="w-full h-10 bg-background">
-            <SelectValue placeholder={dict.dashboard?.allTime || "Period"} />
+            <SelectValue placeholder={dict.dashboard?.allTime} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">
-              {dict.dashboard?.allTime || "All Time"}
+              {dict.dashboard?.allTime}
             </SelectItem>
             <SelectItem value="day">
-              {dict.dashboard?.today || "Today"}
+              {dict.dashboard?.today}
             </SelectItem>
             <SelectItem value="week">
-              {dict.dashboard?.thisWeek || "This Week"}
+              {dict.dashboard?.thisWeek}
             </SelectItem>
             <SelectItem value="month">
-              {dict.dashboard?.thisMonth || "This Month"}
+              {dict.dashboard?.thisMonth}
             </SelectItem>
             <SelectItem value="year">
-              {dict.dashboard?.thisYear || "This Year"}
+              {dict.dashboard?.thisYear}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -71,20 +71,20 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
           onValueChange={(v) => updateFilters(currentPeriod, v)}
         >
           <SelectTrigger className="w-full h-10 bg-background">
-            <SelectValue placeholder={dict.transaction?.type || "Type"} />
+            <SelectValue placeholder={dict.transaction?.type} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">
-              {dict.transaction?.allTypes || "All Types"}
+              {dict.transaction?.allTypes}
             </SelectItem>
             <SelectItem value="income">
-              {dict.transaction?.income || "Income"}
+              {dict.transaction?.income}
             </SelectItem>
             <SelectItem value="expense">
-              {dict.transaction?.expense || "Expense"}
+              {dict.transaction?.expense}
             </SelectItem>
             <SelectItem value="saving">
-              {dict.transaction?.savingType || "Saving"}
+              {dict.transaction?.savingType}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -96,7 +96,7 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
           size="icon"
           onClick={clearFilters}
           className="h-10 w-10 shrink-0 text-muted-foreground hover:text-foreground"
-          title="Clear filters"
+          title={dict.transaction?.clearFilters || "Clear filters"}
         >
           <X className="h-4 w-4" />
         </Button>
