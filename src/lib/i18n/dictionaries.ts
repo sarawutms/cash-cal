@@ -25,6 +25,7 @@ const dictionaries = {
       setBudget: 'ตั้งงบประมาณ',
       noBudget: 'ยังไม่ได้ตั้งงบประมาณ กดไอคอน ✏️ เพื่อตั้งค่า',
       overBudget: 'คุณใช้จ่ายเกินงบประมาณที่ตั้งไว้แล้ว!',
+      cashflow: 'กระแสเงินสด',
     },
     tabs: {
       calendar: 'มุมมองปฏิทิน',
@@ -132,6 +133,7 @@ const dictionaries = {
       setBudget: 'Set Budget',
       noBudget: 'No budget set. Click the ✏️ icon to set one.',
       overBudget: 'You have exceeded your monthly budget!',
+      cashflow: 'Cash flow'
     },
     tabs: {
       calendar: 'Calendar View',

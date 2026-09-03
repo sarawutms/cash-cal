@@ -43,9 +43,12 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
           <CardTitle className="text-xs sm:text-sm font-medium">{dict.dashboard.balance}</CardTitle>
           <Wallet className="h-4 w-4 text-muted-foreground hidden sm:block" />
         </CardHeader>
-        <CardContent>
-          <div className={`text-lg sm:text-2xl font-bold ${stats.balance >= 0 ? 'text-foreground' : 'text-rose-600'}`}>
-            {stats.balance < 0 ? '-' : ''}฿{Math.abs(stats.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        <CardContent className="px-4 sm:px-6 py-4 sm:py-6 pt-0">
+          <div className={`text-lg sm:text-2xl font-bold ${allTimeStats.balance >= 0 ? 'text-foreground' : 'text-rose-600'}`}>
+            ฿{allTimeStats.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1 font-medium">
+            {stats.balance >= 0 ? '+' : '-'} ฿{Math.abs(stats.balance).toLocaleString('en-US', { minimumFractionDigits: 2 })} ({dict.dashboard.cashflow || 'Cash flow'})
           </div>
         </CardContent>
       </Card>
