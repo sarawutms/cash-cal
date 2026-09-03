@@ -58,6 +58,10 @@ const dictionaries = {
       empty: 'ยังไม่มีรายการ (เพิ่มรายการแรกเลย!)',
       loginRequired: 'กรุณาเข้าสู่ระบบเพื่อเพิ่มรายการ',
       loginToView: 'เข้าสู่ระบบเพื่อดูรายการของคุณ',
+      filter: 'ตัวกรอง:',
+      allTypes: 'ทุกประเภท',
+      allCategories: 'ทุกหมวดหมู่',
+      clearFilters: 'ล้างตัวกรอง',
       categories: {
         expense: {
           food: 'อาหาร',
@@ -166,6 +170,10 @@ const dictionaries = {
       empty: 'No transactions yet (add one to start!)',
       loginRequired: 'Please login to add transactions',
       loginToView: 'Login to view your transactions',
+      filter: 'Filter:',
+      allTypes: 'All Types',
+      allCategories: 'All Categories',
+      clearFilters: 'Clear',
       categories: {
         expense: {
           food: 'Food',

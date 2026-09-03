@@ -3,13 +3,19 @@ import { DashboardSummary } from '@/components/transactions/dashboard-summary'
 import { TransactionForm } from '@/components/transactions/transaction-form'
 import { TransactionList } from '@/components/transactions/transaction-list'
 import { CalendarView } from '@/components/transactions/calendar-view'
+import { TransactionFilter } from '@/components/transactions/transaction-filter'
 import { Header } from '@/components/layout/header'
 import { getDictionary } from '@/lib/i18n/dictionaries'
 import { cookies } from 'next/headers'
+import { Suspense } from 'react'
 
 import { DataActions } from '@/components/transactions/data-actions'
 
-export default async function HomePage() {
+export default async function HomePage(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const searchParams = await props.searchParams
+  const filterType = searchParams.type as string | undefined
+  const filterCategory = searchParams.category as string | undefined
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   
@@ -18,16 +24,30 @@ export default async function HomePage() {
   const dict = await getDictionary(lang as 'th' | 'en')
 
   let allTransactions: any[] = []
+  let filteredTransactions: any[] = []
+
   if (user) {
-    const { data } = await supabase
+    // Unfiltered for Dashboard Summary
+    const { data: allData } = await supabase
       .from('transactions')
       .select('*')
       .order('date', { ascending: false })
       .order('created_at', { ascending: false })
-    
-    if (data) {
-      allTransactions = data
-    }
+      
+    if (allData) allTransactions = allData
+
+    // Filtered for List and Calendar
+    let query = supabase
+      .from('transactions')
+      .select('*')
+      .order('date', { ascending: false })
+      .order('created_at', { ascending: false })
+
+    if (filterType) query = query.eq('type', filterType)
+    if (filterCategory) query = query.eq('category', filterCategory)
+      
+    const { data: filteredData } = await query
+    if (filteredData) filteredTransactions = filteredData
   }
 
   return (
@@ -42,6 +62,10 @@ export default async function HomePage() {
 
         <DashboardSummary dict={dict} user={user} transactions={allTransactions} />
         
+        <Suspense fallback={<div className="h-[60px] bg-card rounded-xl border animate-pulse"></div>}>
+          <TransactionFilter dict={dict} />
+        </Suspense>
+
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
           {/* Form */}
@@ -51,12 +75,12 @@ export default async function HomePage() {
 
           {/* Calendar */}
           <div className="order-2 lg:order-none lg:col-span-8 lg:row-span-2 w-full">
-            <CalendarView transactions={allTransactions} dict={dict} user={user} lang={lang} />
+            <CalendarView transactions={filteredTransactions} dict={dict} user={user} lang={lang} />
           </div>
 
           {/* List */}
           <div className="order-3 lg:order-none lg:col-span-4 w-full">
-            <TransactionList user={user} dict={dict} />
+            <TransactionList user={user} dict={dict} transactions={filteredTransactions.slice(0, 50)} />
           </div>
 
         </div>

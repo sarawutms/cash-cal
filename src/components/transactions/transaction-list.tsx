@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { deleteTransaction } from '@/lib/actions/transactions'
@@ -7,7 +6,7 @@ import { Trash2 } from 'lucide-react'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { EditTransactionDialog } from './edit-transaction-dialog'
 
-export async function TransactionList({ dict, user }: { dict: Dictionary, user: any }) {
+export async function TransactionList({ dict, user, transactions = [] }: { dict: Dictionary, user: any, transactions?: any[] }) {
   if (!user) {
     return (
       <Card className="border-0 shadow-none md:border md:shadow-sm">
@@ -20,14 +19,6 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
       </Card>
     )
   }
-
-  const supabase = await createClient()
-  const { data: transactions } = await supabase
-    .from('transactions')
-    .select('*')
-    .order('date', { ascending: false })
-    .order('created_at', { ascending: false })
-    .limit(50)
 
   const getCategoryLabel = (type: string, key: string) => {
     const lowerKey = key ? key.toLowerCase() : ''
