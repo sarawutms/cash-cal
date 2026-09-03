@@ -15,6 +15,7 @@ const dictionaries = {
       income: 'รายรับรวม',
       expense: 'รายจ่ายรวม',
       today: 'วันนี้',
+      thisWeek: 'สัปดาห์นี้',
       thisMonth: 'เดือนนี้',
       thisYear: 'ปีนี้',
       allTime: 'ทั้งหมด'
@@ -95,6 +96,7 @@ const dictionaries = {
       income: 'Total Income',
       expense: 'Total Expenses',
       today: 'Today',
+      thisWeek: 'This Week',
       thisMonth: 'This Month',
       thisYear: 'This Year',
       allTime: 'All Time'

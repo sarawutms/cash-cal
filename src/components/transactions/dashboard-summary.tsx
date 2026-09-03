@@ -5,6 +5,8 @@ import { Wallet, ArrowDownIcon, ArrowUpIcon } from 'lucide-react'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+import { isSameWeek } from 'date-fns'
+
 export function DashboardSummary({ dict, user, transactions }: { dict: Dictionary, user: any, transactions: any[] }) {
   if (!user) return null
 
@@ -24,6 +26,7 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
   const currentYearStr = todayStr.substring(0, 4) // yyyy
 
   const todayStats = calculateStats(transactions.filter(tx => tx.date === todayStr))
+  const weekStats = calculateStats(transactions.filter(tx => isSameWeek(new Date(tx.date), now, { weekStartsOn: 1 })))
   const monthStats = calculateStats(transactions.filter(tx => tx.date.startsWith(currentMonthStr)))
   const yearStats = calculateStats(transactions.filter(tx => tx.date.startsWith(currentYearStr)))
   const allTimeStats = calculateStats(transactions)
@@ -69,12 +72,14 @@ export function DashboardSummary({ dict, user, transactions }: { dict: Dictionar
       <div className="mb-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
         <TabsList className="w-max sm:w-auto inline-flex">
           <TabsTrigger value="day">{dict.dashboard.today}</TabsTrigger>
+          <TabsTrigger value="week">{dict.dashboard.thisWeek}</TabsTrigger>
           <TabsTrigger value="month">{dict.dashboard.thisMonth}</TabsTrigger>
           <TabsTrigger value="year">{dict.dashboard.thisYear}</TabsTrigger>
           <TabsTrigger value="all">{dict.dashboard.allTime}</TabsTrigger>
         </TabsList>
       </div>
       <TabsContent value="day">{renderCards(todayStats)}</TabsContent>
+      <TabsContent value="week">{renderCards(weekStats)}</TabsContent>
       <TabsContent value="month">{renderCards(monthStats)}</TabsContent>
       <TabsContent value="year">{renderCards(yearStats)}</TabsContent>
       <TabsContent value="all">{renderCards(allTimeStats)}</TabsContent>
