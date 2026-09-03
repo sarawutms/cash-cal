@@ -6,7 +6,6 @@ import { CalendarView } from '@/components/transactions/calendar-view'
 import { Header } from '@/components/layout/header'
 import { getDictionary } from '@/lib/i18n/dictionaries'
 import { cookies } from 'next/headers'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { DataActions } from '@/components/transactions/data-actions'
 
@@ -32,37 +31,35 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-6 md:space-y-8">
+    <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6 md:space-y-8">
       <Header user={user} dict={dict} currentLang={lang} />
 
       <main className="space-y-6 md:space-y-8">
+        
+        <div className="flex justify-end mb-4">
+          <DataActions dict={dict} transactions={allTransactions} user={user} />
+        </div>
+
         <DashboardSummary dict={dict} user={user} transactions={allTransactions} />
         
-        <Tabs defaultValue="calendar" className="w-full">
-          <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
-            <TabsList>
-              <TabsTrigger value="calendar">{dict.tabs.calendar}</TabsTrigger>
-              <TabsTrigger value="table">{dict.tabs.list}</TabsTrigger>
-            </TabsList>
-            
-            <DataActions dict={dict} transactions={allTransactions} user={user} />
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          
+          {/* Form */}
+          <div className="order-1 lg:order-none lg:col-span-4 w-full">
+            <TransactionForm user={user} dict={dict} lang={lang} />
           </div>
 
-          <TabsContent value="calendar" className="mt-0">
+          {/* Calendar */}
+          <div className="order-2 lg:order-none lg:col-span-8 lg:row-span-2 w-full">
             <CalendarView transactions={allTransactions} dict={dict} user={user} lang={lang} />
-          </TabsContent>
-          
-          <TabsContent value="table" className="mt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="md:col-span-1">
-                <TransactionForm user={user} dict={dict} lang={lang} />
-              </div>
-              <div className="md:col-span-2">
-                <TransactionList user={user} dict={dict} />
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+
+          {/* List */}
+          <div className="order-3 lg:order-none lg:col-span-4 w-full">
+            <TransactionList user={user} dict={dict} />
+          </div>
+
+        </div>
 
       </main>
     </div>

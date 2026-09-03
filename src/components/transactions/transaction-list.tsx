@@ -62,8 +62,8 @@ export async function TransactionList({ dict, user }: { dict: Dictionary, user: 
       <CardHeader className="px-0 md:px-6">
         <CardTitle>{dict.transaction.recent}</CardTitle>
       </CardHeader>
-      <CardContent className="px-0 md:px-6">
-        <div className="overflow-x-auto">
+      <CardContent className="px-0 md:px-6 pb-6">
+        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
           <Table>
             <TableHeader>
               <TableRow>
