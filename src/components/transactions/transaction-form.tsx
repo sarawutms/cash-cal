@@ -44,7 +44,7 @@ export function TransactionForm({ user, dict, initialDate, onSaved, lang = 'th' 
           }
         }} className="space-y-4">
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="type">{dict.transaction.type}</Label>
               <Select name="type" value={type} onValueChange={(val) => setType(val as string)}>

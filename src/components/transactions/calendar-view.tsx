@@ -92,14 +92,14 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-7 gap-2 mb-2">
+        <div className="grid grid-cols-7 gap-1 md:gap-2 mb-2">
           {weekdays.map(day => (
-            <div key={day} className="text-center text-xs font-semibold text-muted-foreground py-1">
+            <div key={day} className="text-center text-[10px] md:text-xs font-semibold text-muted-foreground py-1 truncate">
               {day}
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-1 md:gap-2">
           {days.map(day => {
             const dateStr = format(day, 'yyyy-MM-dd')
             const stats = dailyStats[dateStr]
@@ -118,17 +118,17 @@ export function CalendarView({ transactions, dict, user, lang }: { transactions:
               <div
                 key={day.toString()}
                 onClick={() => setSelectedDate(day)}
-                className={`min-h-[80px] p-2 rounded-lg border transition-all cursor-pointer hover:border-primary/50 flex flex-col justify-between group relative ${bgColor} ${!isCurrentMonth ? 'opacity-40' : ''} ${isToday ? 'ring-2 ring-primary' : ''}`}
+                className={`min-h-[60px] md:min-h-[80px] p-1 md:p-2 rounded-lg border transition-all cursor-pointer hover:border-primary/50 flex flex-col justify-between group relative ${bgColor} ${!isCurrentMonth ? 'opacity-40' : ''} ${isToday ? 'ring-2 ring-primary' : ''}`}
               >
                 <div className="flex justify-between items-start">
-                  <span className={`text-xs font-semibold ${isToday ? 'text-primary' : ''}`}>{format(day, dateFormat)}</span>
-                  {stats && stats.count > 0 && <span className="text-[10px] text-muted-foreground">{stats.count}</span>}
+                  <span className={`text-[10px] md:text-xs font-semibold ${isToday ? 'text-primary' : ''}`}>{format(day, dateFormat)}</span>
+                  {stats && stats.count > 0 && <span className="text-[9px] md:text-[10px] text-muted-foreground hidden sm:block">{stats.count}</span>}
                 </div>
                 
                 {stats && stats.count > 0 ? (
                   <div className="flex flex-col items-end mt-1">
-                    <span className={`text-xs font-bold ${net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {net >= 0 ? '+' : '-'}฿{Math.abs(net).toLocaleString('en-US')}
+                    <span className={`text-[9px] md:text-xs font-bold truncate max-w-full ${net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {net >= 0 ? '+' : '-'}฿{Math.abs(net).toLocaleString('en-US', { notation: "compact", maximumFractionDigits: 1 })}
                     </span>
                   </div>
                 ) : (

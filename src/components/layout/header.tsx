@@ -17,20 +17,22 @@ export function Header({ user, dict, currentLang }: { user: any, dict: Dictionar
   }
 
   return (
-    <header className="flex justify-between items-center pb-6 border-b">
+    <header className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b gap-4">
       <div>
-        <h1 className="text-3xl font-bold">{dict.app.title}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">{dict.app.title}</h1>
         {user ? (
-          <p className="text-muted-foreground">{dict.app.welcome}, {user.email}</p>
+          <p className="text-sm md:text-base text-muted-foreground">{dict.app.welcome}, {user.email}</p>
         ) : (
-          <p className="text-muted-foreground">{dict.app.subtitle}</p>
+          <p className="text-sm md:text-base text-muted-foreground">{dict.app.subtitle}</p>
         )}
       </div>
-      <div className="flex gap-4 items-center">
-        <ThemeToggle />
-        <Button variant="ghost" onClick={toggleLanguage}>
-          {currentLang === 'th' ? 'EN' : 'TH'}
-        </Button>
+      <div className="flex gap-2 md:gap-4 items-center w-full md:w-auto justify-between md:justify-end">
+        <div className="flex gap-2">
+          <ThemeToggle />
+          <Button variant="ghost" onClick={toggleLanguage}>
+            {currentLang === 'th' ? 'EN' : 'TH'}
+          </Button>
+        </div>
         {user ? (
           <form action={logout}>
             <Button variant="outline" type="submit">{dict.app.logout}</Button>
