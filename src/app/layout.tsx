@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: "Track your income, expenses, and savings with ease.",
 };
 
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
