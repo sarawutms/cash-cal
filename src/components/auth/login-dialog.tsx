@@ -8,6 +8,32 @@ import { Label } from '@/components/ui/label'
 import { login, signup } from '@/app/login/actions'
 import { Dictionary } from '@/lib/i18n/dictionaries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Eye, EyeOff } from 'lucide-react'
+
+function PasswordInput({ id, name, required, minLength, onChange }: any) {
+  const [show, setShow] = useState(false)
+  return (
+    <div className="relative">
+      <Input
+        id={id}
+        name={name}
+        type={show ? 'text' : 'password'}
+        required={required}
+        minLength={minLength}
+        onChange={onChange}
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+        onClick={() => setShow(!show)}
+      >
+        {show ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
+      </Button>
+    </div>
+  )
+}
 
 export function LoginDialog({ dict, trigger }: { dict: Dictionary, trigger?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -41,7 +67,7 @@ export function LoginDialog({ dict, trigger }: { dict: Dictionary, trigger?: Rea
               </div>
               <div className="space-y-2">
                 <Label htmlFor="login-password">{dict.auth.password}</Label>
-                <Input id="login-password" name="password" type="password" required />
+                <PasswordInput id="login-password" name="password" required />
               </div>
               
               <div className="pt-2">
@@ -64,17 +90,16 @@ export function LoginDialog({ dict, trigger }: { dict: Dictionary, trigger?: Rea
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-password">{dict.auth.password}</Label>
-                <Input id="signup-password" name="password" type="password" required minLength={6} />
+                <PasswordInput id="signup-password" name="password" required minLength={6} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-confirm">{dict.auth.confirmPassword}</Label>
-                <Input 
+                <PasswordInput 
                   id="signup-confirm" 
                   name="confirmPassword" 
-                  type="password" 
                   required 
                   minLength={6} 
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     const pass = (document.getElementById('signup-password') as HTMLInputElement)?.value
                     if (e.target.value !== pass) {
                       e.target.setCustomValidity(dict.auth.passwordMismatch || 'Passwords do not match')
