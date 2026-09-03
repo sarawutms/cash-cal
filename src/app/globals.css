@@ -128,3 +128,30 @@
     @apply font-sans;
   }
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.708 0 0); /* Muted foreground */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.556 0 0);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.269 0 0); /* Darker thumb for dark mode */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.439 0 0);
+}
