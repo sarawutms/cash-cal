@@ -11,11 +11,15 @@ export function TransactionFilter({ dict }: { dict: Dictionary }) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
+  const currentPeriod = searchParams.get('period') || 'month'
   const currentType = searchParams.get('type') || 'all'
   const currentCategory = searchParams.get('category') || 'all'
 
-  const updateFilters = (type: string, category: string) => {
+  const updateFilters = (period: string, type: string, category: string) => {
     const params = new URLSearchParams(searchParams.toString())
+    if (period && period !== 'all') params.set('period', period)
+    else params.delete('period')
+
     if (type && type !== 'all') params.set('type', type)
     else params.delete('type')
     
@@ -25,22 +29,27 @@ export function TransactionFilter({ dict }: { dict: Dictionary }) {
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
+  const handlePeriodChange = (value: string | null) => {
+    if (!value) return
+    updateFilters(value, currentType, currentCategory)
+  }
+
   const handleTypeChange = (value: string | null) => {
     if (!value) return
     // Reset category if type changes, since categories are tied to types
-    updateFilters(value, 'all')
+    updateFilters(currentPeriod, value, 'all')
   }
 
   const handleCategoryChange = (value: string | null) => {
     if (!value) return
-    updateFilters(currentType, value)
+    updateFilters(currentPeriod, currentType, value)
   }
 
   const clearFilters = () => {
-    updateFilters('all', 'all')
+    updateFilters('all', 'all', 'all')
   }
 
-  const hasFilters = currentType !== 'all' || currentCategory !== 'all'
+  const hasFilters = currentPeriod !== 'all' || currentType !== 'all' || currentCategory !== 'all'
 
   let categoryKeys: string[] = []
   if (currentType === 'expense') categoryKeys = Object.keys(dict.transaction.categories.expense)
@@ -57,10 +66,23 @@ export function TransactionFilter({ dict }: { dict: Dictionary }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 bg-card p-3 rounded-xl border md:shadow-sm">
-      <div className="text-sm font-medium text-muted-foreground mr-1 hidden sm:block">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3 bg-card p-3 rounded-xl border md:shadow-sm">
+      <div className="text-sm font-medium text-muted-foreground mr-1 hidden lg:block">
         {dict.transaction.filter || 'Filter:'}
       </div>
+
+      <Select value={currentPeriod} onValueChange={handlePeriodChange}>
+        <SelectTrigger className="w-[120px] sm:w-[140px] h-9">
+          <SelectValue placeholder="Period" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">{dict.dashboard?.allTime || 'All Time'}</SelectItem>
+          <SelectItem value="day">{dict.dashboard?.today || 'Today'}</SelectItem>
+          <SelectItem value="week">{dict.dashboard?.thisWeek || 'This Week'}</SelectItem>
+          <SelectItem value="month">{dict.dashboard?.thisMonth || 'This Month'}</SelectItem>
+          <SelectItem value="year">{dict.dashboard?.thisYear || 'This Year'}</SelectItem>
+        </SelectContent>
+      </Select>
       
       <Select value={currentType} onValueChange={handleTypeChange}>
         <SelectTrigger className="w-[140px] h-9">

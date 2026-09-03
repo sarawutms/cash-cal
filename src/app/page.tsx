@@ -11,8 +11,11 @@ import { Suspense } from 'react'
 
 import { DataActions } from '@/components/transactions/data-actions'
 
+import { isSameWeek, startOfWeek, endOfWeek } from 'date-fns'
+
 export default async function HomePage(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const searchParams = await props.searchParams
+  const filterPeriod = searchParams.period as string | undefined || 'month'
   const filterType = searchParams.type as string | undefined
   const filterCategory = searchParams.category as string | undefined
 
@@ -45,6 +48,21 @@ export default async function HomePage(props: { searchParams: Promise<{ [key: st
 
     if (filterType) query = query.eq('type', filterType)
     if (filterCategory) query = query.eq('category', filterCategory)
+    
+    const now = new Date()
+    const todayStr = now.toISOString().split('T')[0]
+    
+    if (filterPeriod === 'day') {
+      query = query.eq('date', todayStr)
+    } else if (filterPeriod === 'week') {
+      const start = startOfWeek(now, { weekStartsOn: 1 }).toISOString().split('T')[0]
+      const end = endOfWeek(now, { weekStartsOn: 1 }).toISOString().split('T')[0]
+      query = query.gte('date', start).lte('date', end)
+    } else if (filterPeriod === 'month') {
+      query = query.gte('date', todayStr.substring(0, 7) + '-01').lte('date', todayStr.substring(0, 7) + '-31')
+    } else if (filterPeriod === 'year') {
+      query = query.gte('date', todayStr.substring(0, 4) + '-01-01').lte('date', todayStr.substring(0, 4) + '-12-31')
+    }
       
     const { data: filteredData } = await query
     if (filteredData) filteredTransactions = filteredData
@@ -60,7 +78,7 @@ export default async function HomePage(props: { searchParams: Promise<{ [key: st
           <DataActions dict={dict} transactions={allTransactions} user={user} />
         </div>
 
-        <DashboardSummary dict={dict} user={user} transactions={allTransactions} />
+        <DashboardSummary dict={dict} user={user} allTransactions={allTransactions} filteredTransactions={filteredTransactions} />
         
         <Suspense fallback={<div className="h-[60px] bg-card rounded-xl border animate-pulse"></div>}>
           <TransactionFilter dict={dict} />
