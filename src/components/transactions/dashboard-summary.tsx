@@ -8,8 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { isSameWeek } from 'date-fns'
 
 export function DashboardSummary({ dict, user, transactions }: { dict: Dictionary, user: any, transactions: any[] }) {
-  if (!user) return null
-
   const calculateStats = (txs: any[]) => {
     let income = 0
     let expense = 0
