@@ -78,6 +78,9 @@ export function ListFilter({ dict }: { dict: Dictionary }) {
             <SelectItem value="income">{dict.transaction.income}</SelectItem>
             <SelectItem value="expense">{dict.transaction.expense}</SelectItem>
             <SelectItem value="saving">{dict.transaction.savingType}</SelectItem>
+            <SelectItem value="brought_forward">
+              {dict.transaction.broughtForward}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
