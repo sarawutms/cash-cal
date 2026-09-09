@@ -9,21 +9,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteTransaction } from "@/lib/actions/transactions";
+import { type FilterPeriod, type FilterType } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Dictionary } from "@/lib/i18n/dictionaries";
 import { getCategoryLabel } from "@/lib/categories";
 import { EditTransactionDialog } from "./edit-transaction-dialog";
 import { Transaction, User } from "@/lib/types";
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+  format,
+} from "date-fns";
 
 export async function TransactionList({
   dict,
   user,
   limit = 50,
+  period = "all",
+  type = "all",
 }: {
   dict: Dictionary;
   user: User | null;
   limit?: number;
+  period?: FilterPeriod;
+  type?: FilterType;
 }) {
   if (!user) {
     return (
@@ -49,6 +63,28 @@ export async function TransactionList({
 
   if (limit > 0) {
     query = query.limit(limit);
+  }
+
+  if (type !== "all") {
+    query = query.eq("type", type);
+  }
+
+  const now = new Date();
+
+  if (period === "day") {
+    query = query.eq("date", format(now, "yyyy-MM-dd"));
+  } else if (period === "week") {
+    query = query
+      .gte("date", format(startOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd"))
+      .lte("date", format(endOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd"));
+  } else if (period === "month") {
+    query = query
+      .gte("date", format(startOfMonth(now), "yyyy-MM-dd"))
+      .lte("date", format(endOfMonth(now), "yyyy-MM-dd"));
+  } else if (period === "year") {
+    query = query
+      .gte("date", format(startOfYear(now), "yyyy-MM-dd"))
+      .lte("date", format(endOfYear(now), "yyyy-MM-dd"));
   }
 
   const { data: transactions } = await query;
