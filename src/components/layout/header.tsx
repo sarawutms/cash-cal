@@ -4,28 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Dictionary } from "@/lib/i18n/dictionaries";
 import { logout } from "@/app/login/actions";
 import { LoginDialog } from "@/components/auth/login-dialog";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { User } from "@/lib/types";
 
 export function Header({
   user,
   dict,
-  currentLang,
 }: {
-  user: any;
+  user: User | null;
   dict: Dictionary;
-  currentLang: string;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
-
-  const toggleLanguage = () => {
-    const newLang = currentLang === "th" ? "en" : "th";
-    document.cookie = `NEXT_LOCALE=${newLang}; path=/; max-age=31536000`;
-    router.refresh();
-  };
 
   return (
     <header className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b gap-4">
@@ -74,9 +66,6 @@ export function Header({
       <div className="flex gap-2 md:gap-4 items-center w-full md:w-auto justify-between md:justify-end">
         <div className="flex gap-2">
           <ThemeToggle />
-          <Button variant="ghost" onClick={toggleLanguage}>
-            {currentLang === "th" ? "EN" : "TH"}
-          </Button>
         </div>
         {user ? (
           <form action={logout}>

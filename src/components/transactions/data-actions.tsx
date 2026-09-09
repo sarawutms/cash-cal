@@ -6,6 +6,23 @@ import { Download, Upload } from "lucide-react";
 import Papa from "papaparse";
 import { Dictionary } from "@/lib/i18n/dictionaries";
 import { importTransactions } from "@/lib/actions/import";
+import { Transaction, User } from "@/lib/types";
+
+interface CsvRow {
+  Date?: string;
+  Type?: string;
+  Category?: string;
+  Amount?: string;
+  Description?: string;
+}
+
+interface ParsedTransaction {
+  date?: string;
+  type?: string;
+  category?: string;
+  amount: number;
+  description?: string;
+}
 
 export function DataActions({
   dict,
@@ -13,8 +30,8 @@ export function DataActions({
   user,
 }: {
   dict: Dictionary;
-  transactions: any[];
-  user: any;
+  transactions: Transaction[];
+  user: User | null;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
@@ -68,16 +85,16 @@ export function DataActions({
           ) {
             setImporting(true);
             try {
-              const formattedData = results.data
-                .map((row: any) => ({
+              const formattedData = (results.data as CsvRow[])
+                .map((row) => ({
                   date: row.Date,
                   type: row.Type,
                   category: row.Category,
-                  amount: parseFloat(row.Amount),
+                  amount: parseFloat(row.Amount ?? ""),
                   description: row.Description,
                 }))
                 .filter(
-                  (tx: any) =>
+                  (tx: ParsedTransaction) =>
                     !isNaN(tx.amount) && tx.date && tx.type && tx.category,
                 );
 

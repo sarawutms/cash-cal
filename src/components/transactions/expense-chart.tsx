@@ -12,33 +12,24 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Transaction } from "@/lib/types";
+import { getCategoryLabel } from "@/lib/categories";
 
 export function ExpenseChart({
   transactions,
   dict,
 }: {
-  transactions: any[];
+  transactions: Transaction[];
   dict: Dictionary;
 }) {
   const [view, setView] = useState<"expense" | "income">("expense");
-
-  const getCategoryLabel = (type: string, key: string) => {
-    const lowerKey = key ? key.toLowerCase() : "";
-    if (type === "expense")
-      return (dict.transaction.categories.expense as any)[lowerKey] || key;
-    if (type === "income")
-      return (dict.transaction.categories.income as any)[lowerKey] || key;
-    if (type === "saving")
-      return (dict.transaction.categories.saving as any)[lowerKey] || key;
-    return key;
-  };
 
   // Aggregate data based on current view
   const filteredTxs = transactions.filter((tx) => tx.type === view);
 
   const aggregated = filteredTxs.reduce(
     (acc, tx) => {
-      const label = getCategoryLabel(tx.type, tx.category);
+      const label = getCategoryLabel(dict, tx.type, tx.category);
       if (!acc[label]) acc[label] = 0;
       acc[label] += Number(tx.amount);
       return acc;
@@ -70,7 +61,9 @@ export function ExpenseChart({
         </CardTitle>
         <Tabs
           value={view}
-          onValueChange={(v) => setView(v as any)}
+          onValueChange={(v) => {
+            if (v === "expense" || v === "income") setView(v);
+          }}
           className="w-full sm:w-[200px]"
         >
           <TabsList className="grid w-full grid-cols-2">
@@ -88,7 +81,7 @@ export function ExpenseChart({
           </div>
         ) : (
           <div className="w-full h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie
                   data={data}
@@ -98,8 +91,8 @@ export function ExpenseChart({
                   outerRadius={95}
                   paddingAngle={5}
                   dataKey="value"
-                  label={({ name, percent }: any) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
+                  label={({ name, percent }: { name?: string; percent?: number }) =>
+                    `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
                   }
                   labelLine={false}
                 >
@@ -111,7 +104,7 @@ export function ExpenseChart({
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: any) =>
+                  formatter={(value: unknown) =>
                     `฿${Number(value).toLocaleString("en-US", { minimumFractionDigits: 2 })}`
                   }
                   contentStyle={{

@@ -14,14 +14,16 @@ import {
 } from "@/components/ui/dialog";
 import { createClient } from "@/lib/supabase/client";
 import { Pencil } from "lucide-react";
+import { format } from "date-fns";
+import { Transaction, User } from "@/lib/types";
 
 export function BudgetCard({
   user,
   transactions,
   dict,
 }: {
-  user: any;
-  transactions: any[];
+  user: User | null;
+  transactions: Transaction[];
   dict: Dictionary;
 }) {
   const [budget, setBudget] = useState<number>(
@@ -33,7 +35,7 @@ export function BudgetCard({
 
   // Calculate current month's expense
   const now = new Date();
-  const currentMonthStr = now.toISOString().substring(0, 7);
+  const currentMonthStr = format(now, "yyyy-MM");
   const monthExpenses = transactions
     .filter(
       (tx) => tx.type === "expense" && tx.date.startsWith(currentMonthStr),
@@ -102,7 +104,7 @@ export function BudgetCard({
                 disabled={isSaving}
                 className="w-full"
               >
-                {isSaving ? "Saving..." : "Save"}
+                {isSaving ? dict.transaction.saving : dict.transaction.save}
               </Button>
             </div>
           </DialogContent>

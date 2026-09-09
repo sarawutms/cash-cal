@@ -15,8 +15,9 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Dictionary } from "@/lib/i18n/dictionaries";
+import { getCategoryLabel } from "@/lib/categories";
 import {
   Dialog,
   DialogContent,
@@ -26,13 +27,6 @@ import {
 import { EditTransactionDialog } from "./edit-transaction-dialog";
 import { TransactionForm } from "@/components/transactions/transaction-form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -41,6 +35,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { th, enUS } from "date-fns/locale";
+import { Transaction, User } from "@/lib/types";
 
 export function CalendarView({
   transactions,
@@ -48,9 +43,9 @@ export function CalendarView({
   user,
   lang,
 }: {
-  transactions: any[];
+  transactions: Transaction[];
   dict: Dictionary;
-  user: any;
+  user: User | null;
   lang: string;
 }) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -106,21 +101,6 @@ export function CalendarView({
     return `${d.getDate()} ${dict.calendar.months[d.getMonth()]} ${d.getFullYear()}`;
   };
 
-  const getCategoryLabel = (type: string, key: string) => {
-    const lowerKey = key ? key.toLowerCase() : "";
-    if (type === "expense")
-      return (dict.transaction.categories.expense as any)[lowerKey] || key;
-    if (type === "income")
-      return (dict.transaction.categories.income as any)[lowerKey] || key;
-    if (type === "brought_forward")
-      return (
-        (dict.transaction.categories.brought_forward as any)[lowerKey] || key
-      );
-    if (type === "saving")
-      return (dict.transaction.categories.saving as any)[lowerKey] || key;
-    return key;
-  };
-
   const weekdays = dict.calendar.weekdays;
 
   return (
@@ -141,7 +121,7 @@ export function CalendarView({
                   {currentDate ? (
                     formatFullDate(currentDate)
                   ) : (
-                    <span>Select date</span>
+                    <span>{dict.transaction.pickDate}</span>
                   )}
                 </Button>
               }
@@ -290,7 +270,7 @@ export function CalendarView({
                                       : "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400"
                               }`}
                             >
-                              {getCategoryLabel(tx.type, tx.category)}
+                              {getCategoryLabel(dict, tx.type, tx.category)}
                             </span>
                           </div>
                           {tx.description && (

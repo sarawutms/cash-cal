@@ -15,6 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormStatus } from "react-dom";
 import { Dictionary } from "@/lib/i18n/dictionaries";
+import { getCategoryLabel } from "@/lib/categories";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import {
   Popover,
@@ -26,6 +27,7 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { th, enUS } from "date-fns/locale";
+import { Transaction, User } from "@/lib/types";
 
 export function TransactionForm({
   user,
@@ -36,12 +38,12 @@ export function TransactionForm({
   transaction,
   isDialog = false,
 }: {
-  user: any;
+  user: User | null;
   dict: Dictionary;
   initialDate?: string;
   onSaved?: () => void;
   lang?: string;
-  transaction?: any;
+  transaction?: Transaction;
   isDialog?: boolean;
 }) {
   const [type, setType] = useState(transaction?.type || "expense");
@@ -63,15 +65,6 @@ export function TransactionForm({
           ? Object.keys(dict.transaction.categories.brought_forward)
           : Object.keys(dict.transaction.categories.saving);
 
-  const getCategoryLabel = (key: string) => {
-    if (type === "expense")
-      return (dict.transaction.categories.expense as any)[key];
-    if (type === "income")
-      return (dict.transaction.categories.income as any)[key];
-    if (type === "brought_forward")
-      return (dict.transaction.categories.brought_forward as any)[key];
-    return (dict.transaction.categories.saving as any)[key];
-  };
 
   const getTypeLabel = (t: string) => {
     if (t === "expense") return dict.transaction.expense;
@@ -120,7 +113,7 @@ export function TransactionForm({
                 name="type"
                 value={type}
                 onValueChange={(val) => {
-                  setType(val as string);
+                  setType(val as "income" | "expense" | "saving" | "brought_forward");
                   setCategory("");
                 }}
               >
@@ -189,7 +182,7 @@ export function TransactionForm({
                       {date ? (
                         `${date.getDate()} ${dict.calendar.months[date.getMonth()]} ${date.getFullYear()}`
                       ) : (
-                        <span>Pick a date</span>
+                        <span>{dict.transaction.pickDate}</span>
                       )}
                     </Button>
                   }
@@ -229,13 +222,13 @@ export function TransactionForm({
             >
               <SelectTrigger>
                 <SelectValue placeholder={dict.transaction.selectPlaceholder}>
-                  {category ? getCategoryLabel(category) : undefined}
+                  {category ? getCategoryLabel(dict, type, category) : undefined}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {categoryKeys.map((cat) => (
                   <SelectItem key={cat} value={cat}>
-                    {getCategoryLabel(cat)}
+                    {getCategoryLabel(dict, type, cat)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -248,7 +241,7 @@ export function TransactionForm({
               id="description"
               name="description"
               placeholder=""
-              defaultValue={transaction?.description}
+              defaultValue={transaction?.description ?? undefined}
             />
           </div>
 

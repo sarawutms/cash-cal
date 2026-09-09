@@ -21,10 +21,12 @@ import {
 } from "@/components/ui/select";
 import { addTransaction } from "@/lib/actions/transactions";
 import { Dictionary } from "@/lib/i18n/dictionaries";
+import { getCategoryLabel } from "@/lib/categories";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { format } from "date-fns";
+import { User } from "@/lib/types";
 
-export function TopUpDialog({ user, dict }: { user: any; dict: Dictionary }) {
+export function TopUpDialog({ user, dict }: { user: User | null; dict: Dictionary }) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,7 +51,7 @@ export function TopUpDialog({ user, dict }: { user: any; dict: Dictionary }) {
           >
             <Plus className="h-3 w-3 sm:mr-1" />
             <span className="hidden sm:inline">
-              {dict.dashboard.cashflow || "Top-up"}
+              {dict.transaction.topUp}
             </span>
           </Button>
         }
@@ -94,14 +96,10 @@ export function TopUpDialog({ user, dict }: { user: any; dict: Dictionary }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="transfer">
-                  {(dict.transaction.categories.brought_forward as any)[
-                    "transfer"
-                  ] || "Transfer from other account"}
+                  {getCategoryLabel(dict, "brought_forward", "transfer")}
                 </SelectItem>
                 <SelectItem value="initial">
-                  {(dict.transaction.categories.brought_forward as any)[
-                    "initial"
-                  ] || "Initial Balance"}
+                  {getCategoryLabel(dict, "brought_forward", "initial")}
                 </SelectItem>
               </SelectContent>
             </Select>

@@ -17,7 +17,21 @@ import { Dictionary } from "@/lib/i18n/dictionaries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye, EyeOff } from "lucide-react";
 
-function PasswordInput({ id, name, required, minLength, onChange }: any) {
+interface PasswordInputProps {
+  id: string;
+  name: string;
+  required?: boolean;
+  minLength?: number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+function PasswordInput({
+  id,
+  name,
+  required,
+  minLength,
+  onChange,
+}: PasswordInputProps) {
   const [show, setShow] = useState(false);
   return (
     <div className="relative">
@@ -143,7 +157,7 @@ export function LoginDialog({
                   name="confirmPassword"
                   required
                   minLength={6}
-                  onChange={(e: any) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const pass = (
                       document.getElementById(
                         "signup-password",

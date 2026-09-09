@@ -12,22 +12,18 @@ import { deleteTransaction } from "@/lib/actions/transactions";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Dictionary } from "@/lib/i18n/dictionaries";
+import { getCategoryLabel } from "@/lib/categories";
 import { EditTransactionDialog } from "./edit-transaction-dialog";
-
-import { isSameWeek, startOfWeek, endOfWeek } from "date-fns";
+import { Transaction, User } from "@/lib/types";
 
 export async function TransactionList({
   dict,
   user,
   limit = 50,
-  period = "all",
-  type = "all",
 }: {
   dict: Dictionary;
-  user: any;
+  user: User | null;
   limit?: number;
-  period?: string;
-  type?: string;
 }) {
   if (!user) {
     return (
@@ -55,47 +51,7 @@ export async function TransactionList({
     query = query.limit(limit);
   }
 
-  if (type && type !== "all") {
-    query = query.eq("type", type);
-  }
-
-  const now = new Date();
-  const todayStr = now.toISOString().split("T")[0];
-
-  if (period === "day") {
-    query = query.eq("date", todayStr);
-  } else if (period === "week") {
-    const start = startOfWeek(now, { weekStartsOn: 1 })
-      .toISOString()
-      .split("T")[0];
-    const end = endOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
-    query = query.gte("date", start).lte("date", end);
-  } else if (period === "month") {
-    query = query
-      .gte("date", todayStr.substring(0, 7) + "-01")
-      .lte("date", todayStr.substring(0, 7) + "-31");
-  } else if (period === "year") {
-    query = query
-      .gte("date", todayStr.substring(0, 4) + "-01-01")
-      .lte("date", todayStr.substring(0, 4) + "-12-31");
-  }
-
   const { data: transactions } = await query;
-
-  const getCategoryLabel = (type: string, key: string) => {
-    const lowerKey = key ? key.toLowerCase() : "";
-    if (type === "expense")
-      return (dict.transaction.categories.expense as any)[lowerKey] || key;
-    if (type === "income")
-      return (dict.transaction.categories.income as any)[lowerKey] || key;
-    if (type === "brought_forward")
-      return (
-        (dict.transaction.categories.brought_forward as any)[lowerKey] || key
-      );
-    if (type === "saving")
-      return (dict.transaction.categories.saving as any)[lowerKey] || key;
-    return key;
-  };
 
   const formatDate = (dateString: string) => {
     const d = new Date(dateString);
@@ -126,35 +82,35 @@ export async function TransactionList({
         <CardTitle>
           {limit > 0
             ? dict.transaction.recent
-            : dict.app.navTransactions || "All Transactions"}
+            : dict.transaction.allTransactions}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-0 md:px-6 pb-6">
         <div
-          className={`overflow-x-auto overflow-y-auto ${limit > 0 ? "max-h-[400px]" : "h-[calc(100vh-250px)] min-h-[500px]"}`}
+          className={`overflow-x-auto overflow-y-auto ${limit > 0 ? "max-h-[600px]" : "h-[calc(100vh-250px)] min-h-[500px]"}`}
         >
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{dict.transaction.date}</TableHead>
-                <TableHead>{dict.transaction.description}</TableHead>
-                <TableHead>{dict.transaction.category}</TableHead>
-                <TableHead className="text-right">
+                <TableHead className="w-[100px] whitespace-nowrap">{dict.transaction.date}</TableHead>
+                <TableHead className="min-w-[120px]">{dict.transaction.description}</TableHead>
+                <TableHead className="w-[120px] whitespace-nowrap">{dict.transaction.category}</TableHead>
+                <TableHead className="text-right whitespace-nowrap">
                   {dict.transaction.amount}
                 </TableHead>
-                <TableHead></TableHead>
+                <TableHead className="w-[80px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((tx: any) => (
+              {transactions.map((tx: Transaction) => (
                 <TableRow key={tx.id}>
                   <TableCell className="font-medium whitespace-nowrap">
                     {formatDate(tx.date)}
                   </TableCell>
-                  <TableCell className="max-w-[150px] truncate">
+                  <TableCell className="break-words">
                     {tx.description || "-"}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         tx.type === "saving" || tx.category === "saving"
@@ -166,7 +122,7 @@ export async function TransactionList({
                               : "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400"
                       }`}
                     >
-                      {getCategoryLabel(tx.type, tx.category)}
+                      {getCategoryLabel(dict, tx.type, tx.category)}
                     </span>
                   </TableCell>
                   <TableCell
@@ -182,7 +138,7 @@ export async function TransactionList({
                     })}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-end gap-1">
                       <EditTransactionDialog
                         transaction={tx}
                         dict={dict}

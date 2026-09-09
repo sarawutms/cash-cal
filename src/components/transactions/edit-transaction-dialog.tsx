@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { TransactionForm } from "./transaction-form";
 import { Dictionary } from "@/lib/i18n/dictionaries";
+import { Transaction, User } from "@/lib/types";
 
 export function EditTransactionDialog({
   transaction,
@@ -13,9 +14,9 @@ export function EditTransactionDialog({
   user,
   lang = "th",
 }: {
-  transaction: any;
+  transaction: Transaction;
   dict: Dictionary;
-  user: any;
+  user: User | null;
   lang?: string;
 }) {
   const [open, setOpen] = useState(false);

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,19 +13,24 @@ import { ExpenseChart } from "./expense-chart";
 import { BudgetCard } from "./budget-card";
 import { TopUpDialog } from "./top-up-dialog";
 import { useState } from "react";
+import { Transaction, User } from "@/lib/types";
 
-import { isSameWeek } from "date-fns";
+import { isSameWeek, format, parseISO } from "date-fns";
 
 export function DashboardSummary({
   dict,
   user,
   transactions,
+  formSlot,
+  calendarSlot,
 }: {
   dict: Dictionary;
-  user: any;
-  transactions: any[];
+  user: User | null;
+  transactions: Transaction[];
+  formSlot?: React.ReactNode;
+  calendarSlot?: React.ReactNode;
 }) {
-  const calculateStats = (txs: any[]) => {
+  const calculateStats = (txs: Transaction[]) => {
     let income = 0;
     let expense = 0;
     let saving = 0;
@@ -47,16 +52,16 @@ export function DashboardSummary({
   };
 
   const now = new Date();
-  const todayStr = now.toISOString().split("T")[0];
-  const currentMonthStr = todayStr.substring(0, 7); // yyyy-MM
-  const currentYearStr = todayStr.substring(0, 4); // yyyy
+  const todayStr = format(now, "yyyy-MM-dd");
+  const currentMonthStr = format(now, "yyyy-MM");
+  const currentYearStr = format(now, "yyyy");
 
   const todayStats = calculateStats(
     transactions.filter((tx) => tx.date === todayStr),
   );
   const weekStats = calculateStats(
     transactions.filter((tx) =>
-      isSameWeek(new Date(tx.date), now, { weekStartsOn: 1 }),
+      isSameWeek(parseISO(tx.date), now, { weekStartsOn: 1 }),
     ),
   );
   const monthStats = calculateStats(
@@ -87,10 +92,10 @@ export function DashboardSummary({
         </CardHeader>
         <CardContent className="px-4 sm:px-6 py-4 sm:py-6 pt-0">
           <div
-            className={`text-lg sm:text-2xl font-bold ${allTimeStats.balance >= 0 ? "text-foreground" : "text-rose-600"}`}
+            className={`text-lg sm:text-2xl font-bold ${stats.balance >= 0 ? "text-foreground" : "text-rose-600"}`}
           >
             ฿
-            {allTimeStats.balance.toLocaleString("en-US", {
+            {stats.balance.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -169,7 +174,7 @@ export function DashboardSummary({
         return transactions.filter((tx) => tx.date === todayStr);
       case "week":
         return transactions.filter((tx) =>
-          isSameWeek(new Date(tx.date), now, { weekStartsOn: 1 }),
+          isSameWeek(parseISO(tx.date), now, { weekStartsOn: 1 }),
         );
       case "month":
         return transactions.filter((tx) => tx.date.startsWith(currentMonthStr));
@@ -203,12 +208,16 @@ export function DashboardSummary({
         <TabsContent value="all">{renderCards(allTimeStats)}</TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        <div className="lg:col-span-1 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mt-6">
+        {/* Left Column (Budget & Form) */}
+        <div className="lg:col-span-4 w-full flex flex-col gap-6">
           <BudgetCard user={user} transactions={transactions} dict={dict} />
+          {formSlot}
         </div>
-        <div className="lg:col-span-2 w-full">
+        {/* Right Column (Chart & Calendar) */}
+        <div className="lg:col-span-8 w-full flex flex-col gap-6">
           <ExpenseChart transactions={getActiveTransactions()} dict={dict} />
+          {calendarSlot}
         </div>
       </div>
     </div>

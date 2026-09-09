@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Prompt } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,12 +19,10 @@ export const metadata: Metadata = {
   description: "Track your income, expenses, and savings with ease.",
 };
 
-import { ThemeProvider } from "@/components/theme-provider";
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="th"
       className={`${inter.variable} ${prompt.variable} font-sans h-full antialiased`}
       suppressHydrationWarning
     >

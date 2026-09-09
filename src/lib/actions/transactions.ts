@@ -34,6 +34,7 @@ export async function addTransaction(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 
 export async function deleteTransaction(id: string) {
@@ -47,6 +48,7 @@ export async function deleteTransaction(id: string) {
   }
 
   revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 export async function updateTransaction(formData: FormData) {
   const supabase = await createClient();
@@ -83,4 +85,5 @@ export async function updateTransaction(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/", "layout");
 }
